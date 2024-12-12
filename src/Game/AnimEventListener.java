@@ -1,7 +1,7 @@
 package Game;
 
 import Game.Gui.Menu;
-
+import Game.Gui.levels;
 import Texture.TextureReader;
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -12,44 +12,47 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.BitSet;
 import Sound.Sound;
 import javax.swing.JOptionPane;
 
-
-
-
 public class AnimEventListener extends AnimationListener {
 
-    public static final int MAX_WIDTH = 100, MAX_HEIGHT = 100;
+    public static final int MAX_WIDTH = 100, MAX_HEIGHT = 100; // set max height and width to translate sprites using integers
+    public static final double End_of_x = MAX_WIDTH - 4;
+    public static final double start_of_x = 25;
+    public static final double End_of_Y = MAX_HEIGHT - 29;
+    public static final double start_of_y = 12;
+    public String levelAsString = "Easy";
 
     Sound sound = new Sound();
-    boolean isMultiPlayer = false;  
+    boolean isMultiPlayer = false;
     TextRenderer textRenderer = new TextRenderer(Font.decode("PLAIN 100"));
     public String username;
     double xPosition = 0, yPosition = 0;
     int whatdraw = 0;
 
 
-
+    boolean isfinished = false;
     private int timer = 0;
     private int timerHandler = 0;
     public static String[] textureNames = {
-        "Menu//PLAYBUTTON.png", "Menu//SETTINGS.png", "Menu//HOW  PLAY.png",
-        "Menu//EXITBUTTON.png","Menu//SINGLE PLAYER.png", "Menu//MULITI PLAYERS .png",
-        "Menu//soundOnWhite.png", "Menu//soundOffWhite.png","Menu//BACKBUTTON.png",
-        "heart.png", "Menu//back.png","Menu//HOW TO PLAY.png",
-        "Menu//Box.png", "Menu//HighScore.png", "Menu//MAINMENU.png",
-        "Menu//TRYAGAIN.png","Menu//EASY.png", "Menu//MEDIUM.png", 
-        "Menu//HARD.png","Menu//BACKBUTTON.png","flags//blueball.png",
-        "flags//redball.png","flags//blueflag.png","flags//redflag.png",
-        "Menu//Background.png"
+            "Menu//PLAYBUTTON.png", "Menu//SETTINGS.png", "Menu//HOW  PLAY.png",
+            "Menu//EXITBUTTON.png","Menu//SINGLE PLAYER.png", "Menu//MULITI PLAYERS .png",
+            "Menu//soundOnWhite.png", "Menu//soundOffWhite.png","Menu//BACKBUTTON.png",
+            "heart.png", "Menu//back.png","Menu//HOW TO PLAY.png",
+            "Menu//Box.png", "Menu//HighScore.png", "Menu//MAINMENU.png",
+            "Menu//TRYAGAIN.png","Menu//EASY.png", "Menu//MEDIUM.png",
+            "Menu//HARD.png","Menu//BACKBUTTON.png","flags//blueball.png",
+            "flags//redball.png","flags//blueflag.png","flags//redflag.png",
+            "Menu//Background.png"
 
     };
 
 
     Menu menu = new Menu();
-
+    levels level = new levels();
     boolean mute = false;
     boolean show = false;
     boolean paused = false;
@@ -65,7 +68,9 @@ public class AnimEventListener extends AnimationListener {
         gl.glPushMatrix();
         gl.glTranslated(x / (MAX_WIDTH / 2.0) - 1, y / (MAX_HEIGHT / 2.0) - 1, 0);
         gl.glScaled(0.01 * xScale, 0.01 * yScale, 1);
+        //System.out.println(x +" " + y);
         gl.glBegin(GL.GL_QUADS);
+        // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(-1.0f, -1.0f, -1.0f);
         gl.glTexCoord2f(1.0f, 0.0f);
@@ -86,6 +91,7 @@ public class AnimEventListener extends AnimationListener {
 
         gl.glPushMatrix();
         gl.glBegin(GL.GL_QUADS);
+        // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(-1.0f, -1.0f, -1.0f);
         gl.glTexCoord2f(1.0f, 0.0f);
@@ -106,6 +112,7 @@ public class AnimEventListener extends AnimationListener {
 
         gl.glPushMatrix();
         gl.glBegin(GL.GL_QUADS);
+        // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(-1.0f, -1.0f, -1.0f);
         gl.glTexCoord2f(1.0f, 0.0f);
@@ -126,6 +133,7 @@ public class AnimEventListener extends AnimationListener {
 
         gl.glPushMatrix();
         gl.glBegin(GL.GL_QUADS);
+        // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(-.99f, -.1f, -1.0f);
         gl.glTexCoord2f(1.0f, 0.0f);
@@ -140,7 +148,26 @@ public class AnimEventListener extends AnimationListener {
         gl.glDisable(GL.GL_BLEND);
     }
 
+    public void drawBlueFlag(GL gl) {
+        gl.glEnable(GL.GL_BLEND);
+        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[textures.length - 3]);	// Turn Blending On
 
+        gl.glPushMatrix();
+        gl.glBegin(GL.GL_QUADS);
+        // Front Face
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(.89f, -.1f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(.99f, -0.1f, -1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3f(.99f, 0.1f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(.89f, 0.1f, -1.0f);
+        gl.glEnd();
+        gl.glPopMatrix();
+
+        gl.glDisable(GL.GL_BLEND);
+    }
 
     public void drawRedBall1(GL gl) {
         gl.glEnable(GL.GL_BLEND);
@@ -148,6 +175,7 @@ public class AnimEventListener extends AnimationListener {
 
         gl.glPushMatrix();
         gl.glBegin(GL.GL_QUADS);
+        // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(-0.6f, -0.1f, -1.0f);
         gl.glTexCoord2f(1.0f, 0.0f);
@@ -162,7 +190,26 @@ public class AnimEventListener extends AnimationListener {
         gl.glDisable(GL.GL_BLEND);
     }
 
+    public void drawBlueBall1(GL gl) {
+        gl.glEnable(GL.GL_BLEND);
+        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[textures.length - 5]);	// Turn Blending On
 
+        gl.glPushMatrix();
+        gl.glBegin(GL.GL_QUADS);
+        // Front Face
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(0.6f, -0.1f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(.7f, -0.1f, -1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3f(.7f, 0.1f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(.6f, 0.1f, -1.0f);
+        gl.glEnd();
+        gl.glPopMatrix();
+
+        gl.glDisable(GL.GL_BLEND);
+    }
 
     public void drawRedBall2(GL gl) {
         gl.glEnable(GL.GL_BLEND);
@@ -185,7 +232,26 @@ public class AnimEventListener extends AnimationListener {
         gl.glDisable(GL.GL_BLEND);
     }
 
+    public void drawBlueBall2(GL gl) {
+        gl.glEnable(GL.GL_BLEND);
+        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[textures.length - 5]);	// Turn Blending On
 
+        gl.glPushMatrix();
+        gl.glBegin(GL.GL_QUADS);
+        // Front Face
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(0.3f, -0.1f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(.4f, -0.1f, -1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3f(.4f, 0.1f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(.3f, 0.1f, -1.0f);
+        gl.glEnd();
+        gl.glPopMatrix();
+
+        gl.glDisable(GL.GL_BLEND);
+    }
 
     public void drawRedBall3(GL gl) {
         gl.glEnable(GL.GL_BLEND);
@@ -193,6 +259,7 @@ public class AnimEventListener extends AnimationListener {
 
         gl.glPushMatrix();
         gl.glBegin(GL.GL_QUADS);
+        // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(-0.6f, 0.4f, -1.0f);
         gl.glTexCoord2f(1.0f, 0.0f);
@@ -207,7 +274,26 @@ public class AnimEventListener extends AnimationListener {
         gl.glDisable(GL.GL_BLEND);
     }
 
+    public void drawBlueBall3(GL gl) {
+        gl.glEnable(GL.GL_BLEND);
+        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[textures.length - 5]);	// Turn Blending On
 
+        gl.glPushMatrix();
+        gl.glBegin(GL.GL_QUADS);
+        // Front Face
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(0.6f, 0.4f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(.7f, 0.4f, -1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3f(.7f, 0.6f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(.6f, 0.6f, -1.0f);
+        gl.glEnd();
+        gl.glPopMatrix();
+
+        gl.glDisable(GL.GL_BLEND);
+    }
 
     public void drawRedBall4(GL gl) {
         gl.glEnable(GL.GL_BLEND);
@@ -230,9 +316,43 @@ public class AnimEventListener extends AnimationListener {
         gl.glDisable(GL.GL_BLEND);
     }
 
+    public void drawBlueBall4(GL gl) {
+        gl.glEnable(GL.GL_BLEND);
+        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[textures.length - 5]);	// Turn Blending On
 
+        gl.glPushMatrix();
+        gl.glBegin(GL.GL_QUADS);
+        // Front Face
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(0.6f, -0.4f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(.7f, -0.4f, -1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3f(.7f, -0.6f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(.6f, -0.6f, -1.0f);
+        gl.glEnd();
+        gl.glPopMatrix();
 
+        gl.glDisable(GL.GL_BLEND);
+    }
 
+    public void DrawDigits(GL gl, double x, double y, int digit, float xScale, float yScale) {
+        if (digit >= 10) {
+            int rightDigit = digit % 10;
+            drawSprite(gl, x + 2, y, 70 + rightDigit, xScale, yScale);
+            drawSprite(gl, x, y, 70 + digit / 10, xScale, yScale);
+        } else {
+            drawSprite(gl, x, y, 70 + digit, xScale, yScale);
+        }
+    }
+
+    public boolean isColliding(double x1, double y1, double radius1, double x2, double y2, double radius2) {
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double distanceSquare = Math.pow(dx, 2) + Math.pow(dy, 2);
+        return distanceSquare <= Math.pow(radius1 + radius1, 2);
+    }
 
     void handleTimer() {
         timerHandler++;
@@ -242,7 +362,12 @@ public class AnimEventListener extends AnimationListener {
         }
     }
 
-
+//    public void DrawScore(GL gl, int x, int y) {
+//        int[] array = {12, 13, 14, 15, 16};
+//        for (int i = 0; i < 5; i++) {
+//            drawSprite(gl, x + i * 2, y, array[i], 2, 2);
+//        }
+//    }
 
     @Override
     public void init(GLAutoDrawable glAutoDrawable) {
@@ -291,39 +416,43 @@ public class AnimEventListener extends AnimationListener {
                 menu.drawMenu(gl);
                 if (mute == false) {
                     System.out.println("unmute");
-
+//                    menu.playsound("StartSound.mp3");
+//                    menu.mediaPlayer.setMute(false);
                 } else {
-
+//                    menu.mediaPlayer.setMute(true);
                     System.out.println("mute");
                 }
                 break;
             case 1:
-   
+
                 handleTimer();
                 drawBack(gl);
                 drawRedFlag(gl);
+                drawBlueFlag(gl);
                 drawRedBall1(gl);
                 drawRedBall2(gl);
                 drawRedBall3(gl);
                 drawRedBall4(gl);
-
+                drawBlueBall1(gl);
+                drawBlueBall2(gl);
+                drawBlueBall3(gl);
+                drawBlueBall4(gl);
 
                 break;
             case 2:
                 if (whatdraw == 2) {
                     menu.drawHowToPlay(gl,11 );
-                      }
+                }
 
                 break;
             case 3: // High Score
                 drawBackground(gl);
 
                 drawSprite(gl, MAX_WIDTH - 10, 5, 13, 12, 6);
-
                 break;
 
-            case 4: // For Class Levels .
-
+            case 4: // levels....
+                level.drawlevels(gl);
                 break;
 
         }
@@ -339,11 +468,11 @@ public class AnimEventListener extends AnimationListener {
     }
 
     private void drawBox(GL gl, TextRenderer textRenderer, String massege, int index) {
-        
+
     }
 
     private void Render(TextRenderer textRenderer, int x, int y, String messege, int fontSize) {
-        
+
     }
 
     @Override
@@ -403,10 +532,24 @@ public class AnimEventListener extends AnimationListener {
         yPosition = 100 - yPosition;
 
         System.out.println("x " + xPosition + " y " + yPosition);
-
-
-
-
+//levels....
+        if (whatdraw == 4) {
+            if (xPosition >= 40 && xPosition <= 60 && yPosition >= 66 && yPosition <= 75) {
+                playSE(3);
+                whatdraw = 1;
+                levelAsString = "Easy";
+            }
+            if (xPosition >= 40 && xPosition <= 60 && yPosition >= 55 && yPosition <= 63) {
+                playSE(3);
+                whatdraw = 1;
+                levelAsString = "Medium";
+            }
+            if (xPosition >= 40 && xPosition <= 60 && yPosition >= 42 && yPosition <= 50) {
+                playSE(3);
+                whatdraw = 1;
+                levelAsString = "Hard";
+            }
+        }
         if (whatdraw == 0) {
             if (xPosition >= 92 && xPosition <= 98 && yPosition >= 2 && yPosition <= 8) {
                 whatdraw = 3;
@@ -415,6 +558,7 @@ public class AnimEventListener extends AnimationListener {
                 playSE(3);
                 System.exit(0);
             }
+
 
             if (xPosition >= 92.5 && xPosition <= 97.5 && yPosition >= 92.5 && yPosition <= 97.5) {
                 playSE(3);
@@ -425,7 +569,7 @@ public class AnimEventListener extends AnimationListener {
                     menu.mute = 6;
                 }
             }
-
+//
             if (xPosition >= 40 && xPosition <= 60 && yPosition >= 66 && yPosition <= 75) {
                 playSE(3);
                 whatdraw = 4;//levels
@@ -438,6 +582,14 @@ public class AnimEventListener extends AnimationListener {
             }
 
         }
+        if (whatdraw == 4) {
+            if (xPosition >= 40 && xPosition <= 60 && yPosition >= 30 && yPosition <= 39) {
+                playSE(3);
+                whatdraw = 0;
+            }
+        }
+
+        ////***///
         if (whatdraw == 2) {
             if (xPosition >= 86 && xPosition <= 94 && yPosition >= 4 && yPosition <= 7) {
                 whatdraw = 0;
@@ -454,10 +606,9 @@ public class AnimEventListener extends AnimationListener {
             if (paused) {
                 if (xPosition >= 28 && xPosition <= 48 && yPosition >= 38 && yPosition <= 48) {
                     if (isMultiPlayer) {
-//                        menu.writeToFile("HighScore.txt", username + ": " + player1.getScore() + " " + player2.getScore() + "\n" + menu.readFromFile("HighScore.txt"));
-
+//
                     } else {
-//                        menu.writeToFile("HighScore.txt", username + ": " + player1.getScore() + "\n" + menu.readFromFile("HighScore.txt"));
+//
                     }
                     playSE(3);
                     resetGame();
@@ -465,10 +616,9 @@ public class AnimEventListener extends AnimationListener {
                 }
                 if (xPosition >= 52 && xPosition <= 72 && yPosition >= 38 && yPosition <= 48) {
                     if (isMultiPlayer) {
-//                        menu.writeToFile("HighScore.txt", username + ": " + player1.getScore() + " " + player2.getScore() + "\n" + menu.readFromFile("HighScore.txt"));
-
+//
                     } else {
-//                        menu.writeToFile("HighScore.txt", username + ": " + player1.getScore() + "\n" + menu.readFromFile("HighScore.txt"));
+//
                     }
                     playSE(3);
                     whatdraw = 0;
@@ -479,10 +629,8 @@ public class AnimEventListener extends AnimationListener {
             if (show) {
                 if (xPosition >= 28 && xPosition <= 48 && yPosition >= 38 && yPosition <= 48) {
                     if (isMultiPlayer) {
-//                        menu.writeToFile("HighScore.txt", username + ": " + player1.getScore() + " " + player2.getScore() + "\n" + menu.readFromFile("HighScore.txt"));
 
                     } else {
-//                        menu.writeToFile("HighScore.txt", username + ": " + player1.getScore() + "\n" + menu.readFromFile("HighScore.txt"));
                     }
 
                     playSE(3);
@@ -490,12 +638,22 @@ public class AnimEventListener extends AnimationListener {
                     show = false;
 
                 }
+                if (xPosition >= 52 && xPosition <= 72 && yPosition >= 38 && yPosition <= 48) {
+                    if (isMultiPlayer) {
 
+                    } else {
+                    }
+                    playSE(3);
+                    whatdraw = 0;
+                    show = false;
+                    resetGame();
+
+                }
             }
         }
 
     }
-    
+
     @Override
     public void mousePressed(MouseEvent e) {
 
