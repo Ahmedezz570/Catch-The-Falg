@@ -285,13 +285,12 @@ public class AnimEventListener extends AnimationListener {
 //        }
         handleTimer();
         drawBack(gl);
-
+        resturnTheFlag(balls);
         for(Ball b:balls){
             b.drawSprite(gl,b.x,b.y,textures.length-5,4,4);
         }
 //        System.out.println(balls.get(1).x);
        holdingFlag(balls);
-
         animation(balls,0,"red");
         animation(balls,2,"red");
         animation(balls,4,"blue");
@@ -312,14 +311,14 @@ public class AnimEventListener extends AnimationListener {
         return Math.pow(x-x1,2)+Math.pow(y-y1,2);
     }
 
-    public boolean areTheyClose(ArrayList <Ball> balls){
-        if(sqrdDistance(balls.get(1).x,balls.get(1).y,xFlag2,yFlag2)<=20){
+    public boolean areTheyClose(double x, double y, double x1, double y1){
+        if(sqrdDistance(x,y,x1,y1)<=20){
             return true;
         }
         return false;
     }
     public void holdingFlag(ArrayList <Ball> balls){
-        if(areTheyClose(balls)) {
+        if(areTheyClose(balls.get(1).x,balls.get(1).y,xFlag2,yFlag2)) {
             xFlag2 = balls.get(1).x;
             yFlag2 = balls.get(1).y;
         }
@@ -328,31 +327,9 @@ public class AnimEventListener extends AnimationListener {
             yFlag2= 50;
         }
     }
-    public void resetGame() {
-    }
-
-    private void drawBox(GL gl, TextRenderer textRenderer, String massege, int index) {
-
-    }
-
-    private void Render(TextRenderer textRenderer, int x, int y, String messege, int fontSize) {
-
-    }
-
-    @Override
-    public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int i2, int i3) {
-
-    }
-
-    @Override
-    public void displayChanged(GLAutoDrawable glAutoDrawable, boolean b, boolean b1) {
-
-    }
-
-
     public void handleKeyPress() {
         // To track the current step in xRB_steps
-    double lengthStep =0.5;
+        double lengthStep =0.5;
         if (true) {
             // Add the target's position to the steps list while following
             if (timeToFollow > 0) {
@@ -381,8 +358,8 @@ public class AnimEventListener extends AnimationListener {
 
         if (isKeyPressed(KeyEvent.VK_LEFT)) {
             balls.get(1).x-=lengthStep;
-           if( balls.get(1).x <= 2.5)
-               balls.get(1).x =2.5;
+            if( balls.get(1).x <= 2.5)
+                balls.get(1).x =2.5;
 
         }
         if( isKeyPressed(KeyEvent.VK_RIGHT)){
@@ -412,7 +389,7 @@ public class AnimEventListener extends AnimationListener {
             b.x-=step;
 
         if(b.x<=X_oldPosi[index]-upper[index] && b.x >= X_oldPosi[index]-lower[index] ) {
-           increaseX[index]= (color == "blue")? false:true;
+            increaseX[index]= (color == "blue")? false:true;
         }
 
         if(increaseX[index])
@@ -448,60 +425,87 @@ public class AnimEventListener extends AnimationListener {
             increaseY[index]=false;
 
     }
-        public void animation(ArrayList<Ball> balls,int index,String color) {
+    public void animation(ArrayList<Ball> balls,int index,String color) {
         double step=0.55;
 
         ifblue(color,index);
 
-            Ball b = balls.get(index);
-            if (!increaseX[index]) {
-                b.x-=step;
-                if (!increaseY[index]) {
-                    b.y-=step;
-                    if (b.y <= Y_oldPosi[index] - 8 && b.y >=Y_oldPosi[index] -9) {
-                        increaseY[index] = true;
-                    }
+        Ball b = balls.get(index);
+        if (!increaseX[index]) {
+            b.x-=step;
+            if (!increaseY[index]) {
+                b.y-=step;
+                if (b.y <= Y_oldPosi[index] - 8 && b.y >=Y_oldPosi[index] -9) {
+                    increaseY[index] = true;
                 }
-                else {
-                    b.y+=step;
-                    if (b.y <= Y_oldPosi[index]+0.75 && b.y >= Y_oldPosi[index]-0.75  ) {
-                        increaseY[index] = false;
-                    }
-                }
-//                if (b.x<= X_oldPosi[index]-24 &&b.x>= X_oldPosi[index]-25 ){
-//                    increaseX[index]=true;
-//                }
             }
             else {
-                b.x+=step;
-                if (!increaseY[index]) {
-                    b.y-=step;
-                    if (b.y <= Y_oldPosi[index] - 7 && b.y >=Y_oldPosi[index] -8) {
-                        increaseY[index] = true;
-                    }
+                b.y+=step;
+                if (b.y <= Y_oldPosi[index]+0.75 && b.y >= Y_oldPosi[index]-0.75  ) {
+                    increaseY[index] = false;
                 }
-                else {
-                    b.y+=step;
-                    if (b.y <= Y_oldPosi[index]+0.75 && b.y >= Y_oldPosi[index]-0.75  ) {
-                        increaseY[index] = false;
-                    }
-                }
-//                if (b.x>= X_oldPosi[index]-0.75 &&b.x>= X_oldPosi[index]+0.75){
-//                    increaseX[index]=false;
-//                }
-
             }
-            if (b.x<= X_oldPosi[index]-upper[index] &&b.x>= X_oldPosi[index]-lower[index] ){
-                increaseX[index]=(color=="blue")? false :true;
-                System.out.println("hello");
-            }
-
-            if (b.x>= X_oldPosi[index]-0.75 &&b.x<= X_oldPosi[index]+0.75){
-                increaseX[index]=(color=="blue")? true :false;;
-            }
-            System.out.println(b.x +" "+ (X_oldPosi[index]-upper[index])+" "+ ( X_oldPosi[index]-lower[index])+" "+increaseX[index] );
 
         }
+        else {
+            b.x+=step;
+            if (!increaseY[index]) {
+                b.y-=step;
+                if (b.y <= Y_oldPosi[index] - 7 && b.y >=Y_oldPosi[index] -8) {
+                    increaseY[index] = true;
+                }
+            }
+            else {
+                b.y+=step;
+                if (b.y <= Y_oldPosi[index]+0.75 && b.y >= Y_oldPosi[index]-0.75  ) {
+                    increaseY[index] = false;
+                }
+            }
+
+        }
+        if (b.x<= X_oldPosi[index]-upper[index] &&b.x>= X_oldPosi[index]-lower[index] ){
+            increaseX[index]=(color=="blue")? false :true;
+            System.out.println("hello");
+        }
+
+        if (b.x>= X_oldPosi[index]-0.75 &&b.x<= X_oldPosi[index]+0.75){
+            increaseX[index]=(color=="blue")? true :false;;
+        }
+        System.out.println(b.x +" "+ (X_oldPosi[index]-upper[index])+" "+ ( X_oldPosi[index]-lower[index])+" "+increaseX[index] );
+
+    }
+
+    public void resturnTheFlag(ArrayList<Ball> balls){
+        Ball ball = balls.get(1);
+        for(Ball b: balls) {
+            if (b == ball) continue;
+            if (areTheyClose(b.x, b.y, ball.x, ball.y)) {
+                xFlag2 = 5;
+                yFlag2 = 50;
+            }
+        }
+    }
+    public void resetGame() {
+    }
+
+    private void drawBox(GL gl, TextRenderer textRenderer, String massege, int index) {
+
+    }
+
+    private void Render(TextRenderer textRenderer, int x, int y, String messege, int fontSize) {
+
+    }
+
+    @Override
+    public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int i2, int i3) {
+
+    }
+
+    @Override
+    public void displayChanged(GLAutoDrawable glAutoDrawable, boolean b, boolean b1) {
+
+    }
+
 
     public BitSet keyBits = new BitSet(256);
 
