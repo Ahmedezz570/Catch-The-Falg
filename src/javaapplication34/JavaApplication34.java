@@ -16,6 +16,21 @@ public class JavaApplication34 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        int booket;
+        double step=0.6;
+        int upper =20;
+        int lower =21;
+        int res;
+    if(true) {
+        booket = upper;
+        upper = lower;
+        lower = booket;
+
+        upper = upper * (-1);
+        lower = lower * (-1);
+         res=50-upper;
+    }
+        System.out.println(res);
     }
     
 }

@@ -23,6 +23,7 @@ public class Animation extends JFrame {
         glcanvas.addGLEventListener(listener);
         glcanvas.addKeyListener(listener);
         glcanvas.addMouseListener(listener);
+        glcanvas.addMouseMotionListener(listener);
         getContentPane().add(glcanvas, BorderLayout.CENTER);
         animator = new FPSAnimator(24);
         animator.add(glcanvas);
