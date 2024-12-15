@@ -261,6 +261,8 @@ public class AnimEventListener extends AnimationListener {
                 drawSprite(gl, xFlag2,yFlag2,textures.length-4,5,5);
                 drawSprite(gl, xFlag1,yFlag1,textures.length-3,5,5);
                 DrawScore(gl ,44,93);
+                DrawSlash(gl, 54 ,92 );
+                DrawSlash(gl, 54 ,94 );
                 break;
 
             case 2:
@@ -491,6 +493,11 @@ public class AnimEventListener extends AnimationListener {
         for (int i = 0; i < 5; i++) {
             drawSprite(gl, x + i * 2, y, array[i], 2, 2);
         }
+    }
+    public void DrawSlash(GL gl, double x, double y) {
+
+        int[] array1 = {34};
+        drawSprite(gl, x , y, array1[0], 1, 1);
     }
 
     public void resturnTheFlag(ArrayList<Ball> balls){
