@@ -67,7 +67,6 @@ public class AnimEventListener extends AnimationListener {
             "Menu//Background.png","Menu//back.png"
 
     };
-
     Menu menu = new Menu();
     levels level = new levels();
     boolean mute = false;
@@ -115,13 +114,11 @@ public class AnimEventListener extends AnimationListener {
         gl.glVertex3f(-1.0f, 1.0f, -1.0f);
         gl.glEnd();
         gl.glPopMatrix();
-
         gl.glDisable(GL.GL_BLEND);
     }
 
 
     public void drawSprite(GL gl, double x, double y, int index, float xScale, float yScale) {
-
         gl.glEnable(GL.GL_BLEND);
         gl.glBindTexture(GL.GL_TEXTURE_2D,textures[index]);    // Turn Blending On
 
@@ -202,7 +199,7 @@ public class AnimEventListener extends AnimationListener {
                 e.printStackTrace();
             }
         }
-
+        initializeBalls();
 
 //        username = JOptionPane.showInputDialog("Enter your name: ");
 //        if (username == null || username.trim().isEmpty()) {
@@ -235,7 +232,6 @@ public class AnimEventListener extends AnimationListener {
                 }
                 break;
             case 1:
-                initializeBalls();
                 handleKeyPress();
                 handleTimer();
                 drawBack(gl);
@@ -266,7 +262,6 @@ public class AnimEventListener extends AnimationListener {
                 break;
             case 3: // High Score
                 drawBackground(gl);
-
                 drawSprite(gl, MAX_WIDTH - 10, 5, 13, 12, 6);
                 break;
 
@@ -372,7 +367,6 @@ public class AnimEventListener extends AnimationListener {
             balls.get(1).y+=lengthStep;
             if( balls.get(1).y >= 97.5)
                 balls.get(1).y =97.5;
-
         }
         if( isKeyPressed(KeyEvent.VK_DOWN)){
             balls.get(1).y-=lengthStep;
@@ -716,7 +710,6 @@ public class AnimEventListener extends AnimationListener {
     private double convertX(double x, double width) {
         return (x / width) * 100;
     }
-
     private double convertY(double y, double height) {
         return (1 - y / height) * 100;
     }
