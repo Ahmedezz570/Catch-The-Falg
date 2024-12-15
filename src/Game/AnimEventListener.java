@@ -62,7 +62,12 @@ public class AnimEventListener extends AnimationListener {
             "heart.png","Menu//HOW TO PLAY.png",
             "Menu//Box.png", "Menu//HighScore.png", "Menu//MAINMENU.png",
             "Menu//TRYAGAIN.png","Menu//EASY.png", "Menu//MEDIUM.png",
-            "Menu//HARD.png","Menu//BACKBUTTON.png","flags//blueball.png",
+            "Menu//HARD.png","Menu//BACKBUTTON.png",
+            "Digits//0.png", "Digits//1.png", "Digits//2.png", "Digits//3.png",
+            "Digits//4.png", "Digits//5.png", "Digits//6.png", "Digits//7.png",
+            "Digits//8.png", "Digits//9.png",
+            "Alphabet//s.png", "Alphabet//c.png", "Alphabet//o.png",
+            "Alphabet//r.png", "Alphabet//e.png", "Digits//slash.png","flags//blueball.png",
             "flags//redball.png","flags//blueflag.png","flags//redflag.png",
             "Menu//Background.png","Menu//back.png"
 
@@ -221,6 +226,7 @@ public class AnimEventListener extends AnimationListener {
 //        System.out.println(sqrdDistance((int) xRB1,(int) yRB1,(int) xFlag2,(int)yFlag2));
         switch (whatdraw) {
             case 0:
+
                 menu.drawMenu(gl);
                 if (mute == false) {
                     System.out.println("unmute");
@@ -230,8 +236,10 @@ public class AnimEventListener extends AnimationListener {
 //                    menu.mediaPlayer.setMute(true);
                     System.out.println("mute");
                 }
+
                 break;
             case 1:
+//
                 handleKeyPress();
                 handleTimer();
                 drawBack(gl);
@@ -252,6 +260,7 @@ public class AnimEventListener extends AnimationListener {
 
                 drawSprite(gl, xFlag2,yFlag2,textures.length-4,5,5);
                 drawSprite(gl, xFlag1,yFlag1,textures.length-3,5,5);
+                DrawScore(gl ,44,93);
                 break;
 
             case 2:
@@ -263,11 +272,18 @@ public class AnimEventListener extends AnimationListener {
             case 3: // High Score
                 drawBackground(gl);
                 drawSprite(gl, MAX_WIDTH - 10, 5, 13, 12, 6);
+
                 break;
 
             case 4: // levels....
                 level.drawlevels(gl);
                 break;
+
+            case 10://how to play
+                if (whatdraw == 10) {
+                    menu.drawHowToPlay(gl, 10);
+
+                }
         }
 
     }
@@ -469,6 +485,13 @@ public class AnimEventListener extends AnimationListener {
         System.out.println(b.x +" "+ (X_oldPosi[index]-upper[index])+" "+ ( X_oldPosi[index]-lower[index])+" "+increaseX[index] );
 
     }
+    public void DrawScore(GL gl, int x, int y) {
+
+        int[] array = {29,30, 31, 32, 33, 34};
+        for (int i = 0; i < 5; i++) {
+            drawSprite(gl, x + i * 2, y, array[i], 2, 2);
+        }
+    }
 
     public void resturnTheFlag(ArrayList<Ball> balls){
         Ball ball = balls.get(1);
@@ -565,6 +588,16 @@ public class AnimEventListener extends AnimationListener {
             }
         }
 //-------------------------------------------------------------------------------------------Menu (Home Page )
+
+            if (whatdraw == 3) {
+            if (xPosition >= 80 && xPosition <= 99 && yPosition >= 4 && yPosition <= 7) {
+                whatdraw = 0;
+                playSE(3);
+            }
+        }
+
+
+
         if (whatdraw == 0) {
         // High_Score
             if (xPosition >= 92 && xPosition <= 98 && yPosition >= 2 && yPosition <= 8) {
@@ -575,10 +608,11 @@ public class AnimEventListener extends AnimationListener {
                 playSE(3);
                 System.exit(0);
             }
-            // How To Play
+            // mute
             if (xPosition >= 92.5 && xPosition <= 97.5 && yPosition >= 92.5 && yPosition <= 97.5) {
                 playSE(3);
                 mute = !mute;
+
                 if (menu.mute == 6) {
                     menu.mute = 7;
                 } else {
@@ -607,13 +641,13 @@ public class AnimEventListener extends AnimationListener {
         }
 
         ////***///
-        if (whatdraw == 2) {
-            if (xPosition >= 86 && xPosition <= 94 && yPosition >= 4 && yPosition <= 7) {
-                whatdraw = 0;
-                playSE(3);
-            }
+        //how to play
+        if (xPosition >= 40 && xPosition <= 60 && yPosition >= 42 && yPosition <= 50) {
+            playSE(3);
+            whatdraw = 10;
         }
-        if (whatdraw == 3) {
+
+        if (whatdraw == 10) {
             if (xPosition >= 86 && xPosition <= 94 && yPosition >= 4 && yPosition <= 7) {
                 whatdraw = 0;
                 playSE(3);

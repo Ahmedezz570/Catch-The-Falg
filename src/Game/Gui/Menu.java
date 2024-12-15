@@ -26,9 +26,10 @@ int []indexMenu  = {0,1,2,3,4,5,6,7,8,9};
         animEventListener.drawSprite(gl, MAX_WIDTH-5, MAX_WIDTH-5, indexMenu[mute],5 , 5);
 
     }
-     public void drawHowToPlay(GL gl ,int index){
-         AnimEventListener animEventListener = new AnimEventListener();
-         animEventListener.drawSprite(gl, (double) MAX_WIDTH /2, (double) MAX_HEIGHT /2, index,100 , 100);
-         animEventListener.drawSprite(gl ,MAX_WIDTH-10 , 5 ,8,12,6 );
-     }
+    public void drawHowToPlay(GL gl ,int index){
+        AnimEventListener animEventListener = new AnimEventListener();
+        animEventListener.drawSprite(gl, MAX_WIDTH/2, MAX_HEIGHT/2, index,100 , 100);
+        animEventListener.drawSprite(gl ,MAX_WIDTH-10 , 5 ,8,12,6 );
+    }
+
 }
