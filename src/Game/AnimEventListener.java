@@ -150,7 +150,7 @@ public class AnimEventListener extends AnimationListener {
     public void DrawDigits(GL gl, double x, double y, int digit, float xScale, float yScale) {
         if (digit >= 10) {
             int rightDigit = digit % 10;
-            drawSprite(gl, x + 2, y, 70 + rightDigit, xScale, yScale);
+            drawSprite(gl, x + 2, y, 29 + rightDigit, xScale, yScale);
             drawSprite(gl, x, y, 70 + digit / 10, xScale, yScale);
         } else {
             drawSprite(gl, x, y, 70 + digit, xScale, yScale);
@@ -166,8 +166,10 @@ public class AnimEventListener extends AnimationListener {
 
     public void drawHandleTimer(GL gl, double x, double y) {
         if (timer > 0 && !isfinished) {
+            handleKeyPress();
             timerHandler++;
             if (timerHandler == 24) {  // Assuming 24 frames per second
+
                 timer--;
                 timerHandler = 0;
             }
@@ -250,21 +252,22 @@ public class AnimEventListener extends AnimationListener {
                 break;
             case 1:
 //
-                handleKeyPress();
+            //    handleKeyPress();
 
                 drawBack(gl);
-                resturnTheFlag(balls);
+               resturnTheFlag(balls);
                 for(Ball b:balls){
                     b.drawSprite(gl,b.x,b.y,textures.length-5,4,4);
                 }
 //        System.out.println(balls.get(1).x);
-                holdingFlag(balls);
+                holdingFlag(balls );
                 animation(balls,0,"red");
                 animation(balls,2,"red");
                 animation(balls,4,"blue");
                 animation(balls,6,"blue");
                 Hori_animation(balls,7,"blue");
                 Hori_animation(balls,3,"red");
+
 //        Vert_animation(balls,7);
 //        Vert_animation(balls,3);
 
@@ -296,7 +299,30 @@ public class AnimEventListener extends AnimationListener {
                 if (whatdraw == 10) {
                     menu.drawHowToPlay(gl, 10);
 
+
                 }
+             case 30 :
+                 resturnTheFlag(balls);
+                 holdingFlag(balls );
+                 resturnTheFlag1(balls);
+                 holdingFlag1(balls );
+                 drawBack(gl);
+                 for(Ball b:balls){
+                     b.drawSprite(gl,b.x,b.y,textures.length-5,4,4);
+                 }
+                 drawSprite(gl, xFlag2,yFlag2,textures.length-4,5,5);
+                 drawSprite(gl, xFlag1,yFlag1,textures.length-3,5,5);
+                 DrawScore(gl ,3,93);
+                 drawHandleTimer(gl,300,620);
+                 DrawSlash(gl, 13 ,92 );
+                 DrawSlash(gl, 13 ,94 );
+                 animation(balls,0,"red");
+                 animation(balls,2,"red");
+                 animation(balls,4,"blue");
+                 animation(balls,6,"blue");
+                 Hori_animation(balls,7,"blue");
+                 Hori_animation(balls,3,"red");
+
         }
 
     }
@@ -314,7 +340,8 @@ public class AnimEventListener extends AnimationListener {
                 if (i % 2 == 0) {
                     Ball b = new Ball(20, (i == 6) ? 80 : 25, textures.length - 6);
                     balls.add(b);
-                } else {
+                }
+                else {
                     Ball b = new Ball((i == 5) ? 45 : 25, 50, textures.length - 6);
                     balls.add(b);
                 }
@@ -342,7 +369,7 @@ public class AnimEventListener extends AnimationListener {
         }
         return false;
     }
-    public void holdingFlag(ArrayList <Ball> balls){
+    public void holdingFlag(ArrayList <Ball> balls ){
         if(areTheyClose(balls.get(1).x,balls.get(1).y,xFlag2,yFlag2)) {
             xFlag2 = balls.get(1).x;
             yFlag2 = balls.get(1).y;
@@ -350,11 +377,26 @@ public class AnimEventListener extends AnimationListener {
         if(balls.get(1).x>50) {
             xFlag2 = 5;
             yFlag2= 50;
+      // DrawDigits(gl , 50 , 80 , 1 , 2 ,2);
         }
+
+    }
+    public void holdingFlag1(ArrayList <Ball> balls ){
+        if(areTheyClose(balls.get(5).x,balls.get(5).y,xFlag1,yFlag1)) {
+            xFlag1 = balls.get(5).x;
+            yFlag1 = balls.get(5).y;
+        }
+        if(balls.get(5).x<50) {
+            xFlag1 = 95;
+            yFlag1= 50;
+            // DrawDigits(gl , 50 , 80 , 1 , 2 ,2);
+        }
+
     }
     public void handleKeyPress() {
         // To track the current step in xRB_steps
-        double lengthStep =0.5;
+        double lengthStep =0.55;
+        if (whatdraw == 1){
         if (true) {
             // Add the target's position to the steps list while following
             if (timeToFollow > 0) {
@@ -380,12 +422,12 @@ public class AnimEventListener extends AnimationListener {
                 }
             }
         }
+        }
 
         if (isKeyPressed(KeyEvent.VK_LEFT)) {
             balls.get(1).x-=lengthStep;
             if( balls.get(1).x <= 2.5)
                 balls.get(1).x =2.5;
-
         }
         if( isKeyPressed(KeyEvent.VK_RIGHT)){
             balls.get(1).x+=lengthStep;
@@ -403,7 +445,31 @@ public class AnimEventListener extends AnimationListener {
                 balls.get(1).y =2.5;
         }
 
+
+if (whatdraw == 30 ){
+        //----------------------------------------------
+        if (isKeyPressed(KeyEvent.VK_A)) {
+            balls.get(5).x-=lengthStep;
+            if( balls.get(5).x <= 2.5)
+                balls.get(5).x =2.5;
+        }
+        if( isKeyPressed(KeyEvent.VK_D)){
+            balls.get(5).x+=lengthStep;
+            if( balls.get(5).x >= 97.5)
+                balls.get(5).x =97.5;
+        }
+        if( isKeyPressed(KeyEvent.VK_W)){
+            balls.get(5).y+=lengthStep;
+            if( balls.get(5).y >= 97.5)
+                balls.get(5).y =97.5;
+        }
+        if( isKeyPressed(KeyEvent.VK_S)){
+            balls.get(5).y-=lengthStep;
+            if( balls.get(5).y <= 2.5)
+                balls.get(5).y =2.5;
+        }
     }
+}
     public void Hori_animation(ArrayList<Ball> balls,int index,String color){
         Ball b= balls.get(index);
         double step=0.6;
@@ -520,6 +586,16 @@ public class AnimEventListener extends AnimationListener {
             }
         }
     }
+    public void resturnTheFlag1(ArrayList<Ball> balls){
+        Ball ball = balls.get(5);
+        for(Ball b: balls) {
+            if (b == ball) continue;
+            if (areTheyClose(b.x, b.y, ball.x, ball.y)) {
+                xFlag1 = 95;
+                yFlag1 = 50;
+            }
+        }
+    }
     public void resetGame() {
     }
 
@@ -590,8 +666,14 @@ public class AnimEventListener extends AnimationListener {
         if (whatdraw == 4) {
             if (xPosition >= 40 && xPosition <= 60 && yPosition >= 66 && yPosition <= 75) {
                 playSE(3);
-                whatdraw = 1;
-                levelAsString = "Easy";
+                if (isMultiPlayer == false) {
+                    whatdraw = 1;
+                    levelAsString = "Easy";
+                }
+                else {
+                    whatdraw = 30;
+                    levelAsString = "Easy ";
+                }
             }
             if (xPosition >= 40 && xPosition <= 60 && yPosition >= 55 && yPosition <= 63) {
                 playSE(3);
