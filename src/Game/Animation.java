@@ -13,7 +13,6 @@ public class Animation extends JFrame {
         new Animation();
     }
 
-
     public Animation() {
         GLCanvas glcanvas;
         Animator animator;

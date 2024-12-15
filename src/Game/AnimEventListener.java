@@ -41,7 +41,8 @@ public class AnimEventListener extends AnimationListener {
     double xFlag2 =5,yFlag2=50;
     double xFlag1=95,yFlag1=50;
     boolean isfinished = false;
-    private int timer = 0;
+    private int timer = 60;
+    private int score =0;
     private int timerHandler = 0;
         int timeToFollow=10;
     int stepIndex = 0;
@@ -163,13 +164,22 @@ public class AnimEventListener extends AnimationListener {
         return distanceSquare <= Math.pow(radius1 + radius1, 2);
     }
 
-    void handleTimer() {
-        timerHandler++;
-        if (timerHandler == 24) {
-            timer++;
-            timerHandler = 0;
+    public void drawHandleTimer(GL gl, double x, double y) {
+        if (timer > 0 && !isfinished) {
+            timerHandler++;
+            if (timerHandler == 24) {  // Assuming 24 frames per second
+                timer--;
+                timerHandler = 0;
+            }
+        } else if (timer == 0 && !isfinished) {
+            isfinished = true;
+            score = 30;
         }
+        textRenderer.beginRendering(700, 700);
+        textRenderer.draw( "" +timer,(int)  x,(int) y);
+        textRenderer.endRendering();
     }
+
 
 //    public void DrawScore(GL gl, int x, int y) {
 //        int[] array = {12, 13, 14, 15, 16};
@@ -241,7 +251,7 @@ public class AnimEventListener extends AnimationListener {
             case 1:
 //
                 handleKeyPress();
-                handleTimer();
+
                 drawBack(gl);
                 resturnTheFlag(balls);
                 for(Ball b:balls){
@@ -260,9 +270,10 @@ public class AnimEventListener extends AnimationListener {
 
                 drawSprite(gl, xFlag2,yFlag2,textures.length-4,5,5);
                 drawSprite(gl, xFlag1,yFlag1,textures.length-3,5,5);
-                DrawScore(gl ,44,93);
-                DrawSlash(gl, 54 ,92 );
-                DrawSlash(gl, 54 ,94 );
+                DrawScore(gl ,3,93);
+                drawHandleTimer(gl,300,620);
+                DrawSlash(gl, 13 ,92 );
+                DrawSlash(gl, 13 ,94 );
                 break;
 
             case 2:
@@ -495,7 +506,6 @@ public class AnimEventListener extends AnimationListener {
         }
     }
     public void DrawSlash(GL gl, double x, double y) {
-
         int[] array1 = {34};
         drawSprite(gl, x , y, array1[0], 1, 1);
     }
