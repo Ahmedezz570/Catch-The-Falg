@@ -86,8 +86,6 @@ public class AnimEventListener extends AnimationListener {
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     public static int[] textures = new int[textureNames.length];
 
-
-
     public void drawBackground(GL gl) {
         gl.glEnable(GL.GL_BLEND);
         gl.glBindTexture(GL.GL_TEXTURE_2D, textures[textures.length - 2]);
@@ -186,15 +184,6 @@ public class AnimEventListener extends AnimationListener {
         textRenderer.draw( "" +timer,(int)  x,(int) y);
         textRenderer.endRendering();
     }
-
-
-//    public void DrawScore(GL gl, int x, int y) {
-//        int[] array = {12, 13, 14, 15, 16};
-//        for (int i = 0; i < 5; i++) {
-//            drawSprite(gl, x + i * 2, y, array[i], 2, 2);
-//        }
-//    }
-
     @Override
     public void init(GLAutoDrawable glAutoDrawable) {
         GL gl = glAutoDrawable.getGL();
@@ -231,14 +220,6 @@ public class AnimEventListener extends AnimationListener {
         level_ =new Level(balls,flags,e,1);
 //        initializeBalls();
 
-//        username = JOptionPane.showInputDialog("Enter your name: ");
-//        if (username == null || username.trim().isEmpty()) {
-//            username = "Guest";
-//
-//        }
-//        xRB1=balls.get(0).x;
-//        yRB1=balls.get(0).y;
-
     }
 
     @Override
@@ -264,38 +245,12 @@ public class AnimEventListener extends AnimationListener {
 
                 break;
             case 1:
-//                handleTimer();
+//              handleTimer();
                 drawBack(gl);
                 level_.init(gl,textures);
 //
                 handleKeyPress();
 
-//                drawBack(gl);
-//               resturnTheFlag(balls);
-//                for(Ball b:balls){
-//                    b.drawSprite(gl,b.x,b.y,textures.length-5,4,4);
-//                }
-////        System.out.println(balls.get(1).x);
-//                holdingFlag(balls );
-//                animation(balls,0,"red");
-//                animation(balls,2,"red");
-//                animation(balls,4,"blue");
-//                animation(balls,6,"blue");
-//                Hori_animation(balls,7,"blue");
-//                Hori_animation(balls,3,"red");
-//
-////        Vert_animation(balls,7);
-////        Vert_animation(balls,3);
-//
-//                drawSprite(gl, xFlag2,yFlag2,textures.length-4,5,5);
-//                drawSprite(gl, xFlag1,yFlag1,textures.length-3,5,5);
-//                DrawScore(gl ,3,93);
-//                drawHandleTimer(gl,300,620);
-//                DrawSlash(gl, 13 ,92 );
-//                DrawSlash(gl, 13 ,94 );
-
-//<<<<<<< HEAD
-//=======
                 drawSprite(gl, xFlag2,yFlag2,textures.length-4,5,5);
                 drawSprite(gl, xFlag1,yFlag1,textures.length-3,5,5);
                 DrawScore(gl ,3,93);
@@ -352,36 +307,6 @@ public class AnimEventListener extends AnimationListener {
         }
 
     }
-//    public void initializeBalls() {
-//        for (int i = 0; i < 8; i++) {
-//            if (i < 4) {
-//                if (i % 2 == 0) {
-//                    Ball b = new Ball(80, (i == 2) ? 80 : 25, textures.length - 5);
-//                    balls.add(b);
-//                } else {
-//                    Ball b = new Ball((i == 1) ? 55 : 75, 50, textures.length - 5);
-//                    balls.add(b);
-//                }
-//            } else {
-//                if (i % 2 == 0) {
-//                    Ball b = new Ball(20, (i == 6) ? 80 : 25, textures.length - 6);
-//                    balls.add(b);
-//                }
-//                else {
-//                    Ball b = new Ball((i == 5) ? 45 : 25, 50, textures.length - 6);
-//                    balls.add(b);
-//                }
-//            }
-//            X_oldPosi[i] = balls.get(i).x;
-//            Y_oldPosi[i] = balls.get(i).y;
-//            increaseX[i] = false;
-//            increaseY[i] = false;
-//            lower[i] = 21;
-//            upper[i] = 20;
-//            onetime[i] = true;
-//        }
-//    }
-
     public void drawHighScore(String highScore) {
 
     }
@@ -560,7 +485,6 @@ if (whatdraw == 30 ){
                     increaseY[index] = false;
                 }
             }
-
         }
         else {
             b.x+=step;
@@ -592,12 +516,23 @@ if (whatdraw == 30 ){
     private int currentNumber = 0;
     public void DrawPlayerScore(GL gl, int x, int y, ArrayList<Ball> balls) {
         holdingFlag(balls);
-        if (  currentNumber < 3 && areTheyClose (x,y,x,y)) {
+        if (  currentNumber < 3 && xFlag2 > 49.3) {
             currentNumber++;
         }
         TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 25));
         textRenderer.beginRendering(600, 700);
         textRenderer.draw(Integer.toString(currentNumber), x, y);
+        textRenderer.endRendering();
+    }
+    private int currentNumber2 = 0;
+    public void DrawPlayer2Score(GL gl, int x, int y, ArrayList<Ball> balls) {
+        holdingFlag(balls);
+        if (  currentNumber2 < 3 && xFlag1 <51 && areTheyClose(x,y,x,y)) {
+            currentNumber2++;
+        }
+        TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 25));
+        textRenderer.beginRendering(600, 700);
+        textRenderer.draw(Integer.toString(currentNumber2), x, y);
         textRenderer.endRendering();
     }
     public void DrawScore(GL gl, int x, int y) {
@@ -883,66 +818,3 @@ if (whatdraw == 30 ){
         return (1 - y / height) * 100;
     }
 }
-
-//class Ball{
-//
-//    public Ball(double x, double y, int textureNumber) {
-//        this.x = x;
-//        this.y = y;
-//        this.textureNumber = textureNumber;
-//
-//    }
-//
-//    public double getX() {
-//        return x;
-//    }
-//
-//    public void setX(double x) {
-//        this.x = x;
-//    }
-//
-//    public double getY() {
-//        return y;
-//    }
-//
-//    public void setY(double y) {
-//        this.y = y;
-//    }
-//    public void drawSprite(GL gl, double x, double y, int index, float xScale, float yScale) {
-//        int MAX_WIDTH=100;
-//        int MAX_HEIGHT=100;
-//
-//        gl.glEnable(GL.GL_BLEND);
-//        gl.glBindTexture(GL.GL_TEXTURE_2D, AnimEventListener.textures[textureNumber]);    // Turn Blending On
-//
-//        gl.glPushMatrix();
-//        gl.glTranslated(x / (MAX_WIDTH / 2.0) - 1, y / (MAX_HEIGHT / 2.0) - 1, 0);
-//        gl.glScaled(0.01 * xScale, 0.01 * yScale, 1);
-////        System.out.println(x +" " + y);
-//        gl.glBegin(GL.GL_QUADS);
-//        // Front Face
-//        gl.glTexCoord2f(0.0f, 0.0f);
-//        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-//        gl.glTexCoord2f(1.0f, 0.0f);
-//        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-//        gl.glTexCoord2f(1.0f, 1.0f);
-//        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-//        gl.glTexCoord2f(0.0f, 1.0f);
-//        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-//        gl.glEnd();
-//        gl.glPopMatrix();
-//
-//        gl.glDisable(GL.GL_BLEND);
-//    }
-//    double x,y;
-//
-//    int textureNumber;
-//}
-//class steps {
-//  double x,y;
-//
-//    public steps(double x, double y) {
-//        this.x = x;
-//        this.y = y;
-//    }
-//}
