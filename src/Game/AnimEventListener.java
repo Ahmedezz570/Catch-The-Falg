@@ -300,6 +300,7 @@ public class AnimEventListener extends AnimationListener {
                 drawSprite(gl, xFlag1,yFlag1,textures.length-3,5,5);
                 DrawScore(gl ,3,93);
                 DrawPlayerScore(gl,90,645,balls);
+
                 drawHandleTimer(gl,320,650);
                 DrawSlash(gl, 13 ,92 );
                 DrawSlash(gl, 13 ,94 );
@@ -592,7 +593,7 @@ if (whatdraw == 30 ){
     private int currentNumber = 0;
     public void DrawPlayerScore(GL gl, int x, int y, ArrayList<Ball> balls) {
         holdingFlag(balls);
-        if (  currentNumber < 3 && areTheyClose (x,y,x,y)) {
+        if (  currentNumber < 3 && xFlag2>49.3) {
             currentNumber++;
         }
         TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 25));
@@ -600,6 +601,28 @@ if (whatdraw == 30 ){
         textRenderer.draw(Integer.toString(currentNumber), x, y);
         textRenderer.endRendering();
     }
+//    private int currentNumber2 = 0;
+//    public void DrawPlayerScore2(GL gl, int x, int y, ArrayList<Ball> balls) {
+//        holdingFlag(balls);
+//        if (  currentNumber < 3 && areTheyClose(x,y,x,y)) {
+//            currentNumber++;
+//        }
+//        TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 25));
+//        textRenderer.beginRendering(600, 700);
+//        textRenderer.draw(Integer.toString(currentNumber), x, y);
+//        textRenderer.endRendering();
+//    }
+
+
+//handle the end of the game
+
+//    public void gameIsover (GL gl, int x ,int y){
+//        if (currentNumber ==3 || timer == 0 ){
+//        isfinished = true;
+//
+//        }
+//    }
+
     public void DrawScore(GL gl, int x, int y) {
 
         int[] array = {29,30, 31, 32, 33, 34};
