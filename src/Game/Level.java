@@ -58,6 +58,8 @@ public class Level {
             }
             e.holdingFlag();
             e.resturnTheFlag(balls);
+//            e.resturnTheFlag1(balls);
+//            e.holdingFlag1();
         }
     }
     public void create (int [] textures){
