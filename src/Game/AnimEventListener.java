@@ -15,51 +15,31 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import Sound.Sound;
 
-
-// switch
-// 0 =>menu
-//1=>leve
-//2 =>game
 public class AnimEventListener extends AnimationListener {
     double Xmouse,Ymouse;
     public static final int MAX_WIDTH = 100, MAX_HEIGHT = 100; // set max height and width to translate sprites using integers
-    public static final double End_of_x = MAX_WIDTH - 4;
-    public static final double start_of_x = 25;
-    public static final double End_of_Y = MAX_HEIGHT - 29;
-    public static final double start_of_y = 12;
     public String levelAsString = "Easy";
-
     Sound sound = new Sound();
     boolean isMultiPlayer = false;
-    TextRenderer textRenderer = new TextRenderer(Font.decode("PLAIN 100"));
-    public String username;
     double xPosition = 0, yPosition = 0;
     int whatdraw = 0;
-    double xRB1 , yRB1 ;
-    double xBB1 , yBB1 ;
-
-    double xFlag2 =5,yFlag2=50;
-    double xFlag1=95,yFlag1=50;
     boolean isfinished = false;
     private int timer = 60;
     private int score =0;
     private int timerHandler = 0;
-        int timeToFollow=10;
+    int timeToFollow=10;
     int stepIndex = 0;
     ArrayList<Ball> balls=new ArrayList<>();
     ArrayList<steps> xRB_steps=new ArrayList<>();
     ArrayList<flag> flags =new ArrayList<>();
     entity e;
-
     Level level_;
-
-    boolean []onetime=new boolean[8];
-    int []lower=new int[8];
-    int []upper=new int[8];
-    double []X_oldPosi=new double[8];
-    double []Y_oldPosi=new double[8];
-    boolean increaseX[]=new boolean[8];
-    boolean increaseY[]=new boolean[8];
+    Level  level_2 ;
+    Menu menu = new Menu();
+    levels level = new levels();
+    boolean mute = false;
+    boolean show = false;
+    boolean paused = false;
     public static String[] textureNames = {
             "Menu//PLAYBUTTON.png", "Menu//SETTINGS.png", "Menu//HOW  PLAY.png",
             "Menu//EXITBUTTON.png","Menu//SINGLE PLAYER.png", "Menu//MULITI PLAYERS .png",
@@ -77,11 +57,7 @@ public class AnimEventListener extends AnimationListener {
             "Menu//Background.png","Menu//back.png"
 
     };
-    Menu menu = new Menu();
-    levels level = new levels();
-    boolean mute = false;
-    boolean show = false;
-    boolean paused = false;
+
 
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     public static int[] textures = new int[textureNames.length];
@@ -109,11 +85,9 @@ public class AnimEventListener extends AnimationListener {
 
     public void drawBack(GL gl) {
         gl.glEnable(GL.GL_BLEND);
-        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[textures.length - 1]);	// Turn Blending On
-
+        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[textures.length - 1]);
         gl.glPushMatrix();
         gl.glBegin(GL.GL_QUADS);
-        // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(-1.0f, -1.0f, -1.0f);
         gl.glTexCoord2f(1.0f, 0.0f);
@@ -135,9 +109,7 @@ public class AnimEventListener extends AnimationListener {
         gl.glPushMatrix();
         gl.glTranslated(x / (MAX_WIDTH / 2.0) - 1, y / (MAX_HEIGHT / 2.0) - 1, 0);
         gl.glScaled(0.01 * xScale, 0.01 * yScale, 1);
-//        System.out.println(x +" " + y);
         gl.glBegin(GL.GL_QUADS);
-        // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(-1.0f, -1.0f, -1.0f);
         gl.glTexCoord2f(1.0f, 0.0f);
@@ -151,23 +123,6 @@ public class AnimEventListener extends AnimationListener {
 
         gl.glDisable(GL.GL_BLEND);
     }
-    public void DrawDigits(GL gl, double x, double y, int digit, float xScale, float yScale) {
-        if (digit >= 10) {
-            int rightDigit = digit % 10;
-            drawSprite(gl, x + 2, y, 29 + rightDigit, xScale, yScale);
-            drawSprite(gl, x, y, 70 + digit / 10, xScale, yScale);
-        } else {
-            drawSprite(gl, x, y, 70 + digit, xScale, yScale);
-        }
-    }
-
-    public boolean isColliding(double x1, double y1, double radius1, double x2, double y2, double radius2) {
-        double dx = x2 - x1;
-        double dy = y2 - y1;
-        double distanceSquare = Math.pow(dx, 2) + Math.pow(dy, 2);
-        return distanceSquare <= Math.pow(radius1 + radius1, 2);
-    }
-
     public void drawHandleTimer(GL gl, double x, double y) {
         if (timer > 0 && !isfinished) {
             handleKeyPress();
@@ -186,14 +141,6 @@ public class AnimEventListener extends AnimationListener {
         textRenderer.draw( "" +timer,(int)  x,(int) y);
         textRenderer.endRendering();
     }
-
-
-//    public void DrawScore(GL gl, int x, int y) {
-//        int[] array = {12, 13, 14, 15, 16};
-//        for (int i = 0; i < 5; i++) {
-//            drawSprite(gl, x + i * 2, y, array[i], 2, 2);
-//        }
-//    }
 
     @Override
     public void init(GLAutoDrawable glAutoDrawable) {
@@ -225,22 +172,22 @@ public class AnimEventListener extends AnimationListener {
             flag f =new flag((i==1)?95:5,50,(i==1)?textures.length-3:textures.length-4);
             flags.add(f);
         }
-        Level level_01=new Level(balls,1);
-//        level_01.create(textures);
-        e=new entity(balls.get(1),flags.get(0));
-        level_ =new Level(balls,flags,e,1);
-//        initializeBalls();
-
-//        username = JOptionPane.showInputDialog("Enter your name: ");
-//        if (username == null || username.trim().isEmpty()) {
-//            username = "Guest";
-//
-//        }
-//        xRB1=balls.get(0).x;
-//        yRB1=balls.get(0).y;
-
     }
-
+   boolean initiallevel = true ;
+    public void levelll (int level){
+        if (level == 1){
+            Level level_01=new Level(balls,1);
+            level_01.create(textures);
+            e=new entity(balls.get(1),flags.get(0));
+            initiallevel = false;
+        }
+        else if (level == 2){
+            Level level_02=new Level(balls,2);
+            level_02.create(textures);
+            e=new entity(balls.get(1),flags.get(0));
+            initiallevel = false;
+        }
+    }
     @Override
     public void display(GLAutoDrawable glAutoDrawable) {
         GL gl = glAutoDrawable.getGL();
@@ -248,10 +195,8 @@ public class AnimEventListener extends AnimationListener {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
 
-//        System.out.println(sqrdDistance((int) xRB1,(int) yRB1,(int) xFlag2,(int)yFlag2));
         switch (whatdraw) {
             case 0:
-
                 menu.drawMenu(gl);
                 if (mute == false) {
                     System.out.println("unmute");
@@ -263,54 +208,35 @@ public class AnimEventListener extends AnimationListener {
                 }
 
                 break;
-            case 1:
-//                handleTimer();
+            case 1:    // Single (Easy)
                 drawBack(gl);
+                if (initiallevel){
+                     levelll(1);
+                     initiallevel= false ;
+                }
+
+                level_ =new Level(balls,flags,e,1);
                 level_.init(gl,textures);
-//
                 handleKeyPress();
-
-//                drawBack(gl);
-//               resturnTheFlag(balls);
-//                for(Ball b:balls){
-//                    b.drawSprite(gl,b.x,b.y,textures.length-5,4,4);
-//                }
-////        System.out.println(balls.get(1).x);
-//                holdingFlag(balls );
-//                animation(balls,0,"red");
-//                animation(balls,2,"red");
-//                animation(balls,4,"blue");
-//                animation(balls,6,"blue");
-//                Hori_animation(balls,7,"blue");
-//                Hori_animation(balls,3,"red");
-//
-////        Vert_animation(balls,7);
-////        Vert_animation(balls,3);
-//
-//                drawSprite(gl, xFlag2,yFlag2,textures.length-4,5,5);
-//                drawSprite(gl, xFlag1,yFlag1,textures.length-3,5,5);
-//                DrawScore(gl ,3,93);
-//                drawHandleTimer(gl,300,620);
-//                DrawSlash(gl, 13 ,92 );
-//                DrawSlash(gl, 13 ,94 );
-
-//<<<<<<< HEAD
-//=======
-                drawSprite(gl, xFlag2,yFlag2,textures.length-4,5,5);
-                drawSprite(gl, xFlag1,yFlag1,textures.length-3,5,5);
                 DrawScore(gl ,3,93);
-                DrawPlayerScore(gl,90,645,balls);
-
                 drawHandleTimer(gl,320,650);
                 DrawSlash(gl, 13 ,92 );
                 DrawSlash(gl, 13 ,94 );
-//>>>>>>> f2c1cb3886454270d5d493aa7f173c97cd1fb073
-                break;
-            case 2:
-                if (whatdraw == 2) {
-                    menu.drawHowToPlay(gl,11 );
-                }
 
+                break;
+            case 2:    // Single (Medium)
+                drawBack(gl);
+                if (initiallevel){
+                    levelll(2);
+                    initiallevel= false ;
+                }
+                level_2 =new Level(balls,flags,e,2);
+                level_2.init(gl,textures);
+                handleKeyPress();
+                DrawScore(gl ,3,93);
+                drawHandleTimer(gl,320,650);
+                DrawSlash(gl, 13 ,92 );
+                DrawSlash(gl, 13 ,94 );
                 break;
             case 3: // High Score
                 drawBackground(gl);
@@ -323,106 +249,43 @@ public class AnimEventListener extends AnimationListener {
                 break;
 
             case 10://how to play
-                if (whatdraw == 10) {
-                    menu.drawHowToPlay(gl, 10);
+                menu.drawHowToPlay(gl, 10);
 
 
-                }
-             case 30 :
-                 resturnTheFlag(balls);
-                 holdingFlag(balls );
-                 resturnTheFlag1(balls);
-                 holdingFlag1(balls );
+            case 30 :  // Multi (Easy)
                  drawBack(gl);
-                 for(Ball b:balls){
-                     b.drawSprite(gl,b.x,b.y,textures.length-5,4,4);
+                 if (initiallevel){
+                     levelll(1);
+                     initiallevel= false ;
                  }
-                 drawSprite(gl, xFlag2,yFlag2,textures.length-4,5,5);
-                 drawSprite(gl, xFlag1,yFlag1,textures.length-3,5,5);
+                 level_ =new Level(balls,flags,e,1);
+                 level_.init(gl,textures);
                  DrawScore(gl ,3,93);
                  drawHandleTimer(gl,300,620);
                  DrawSlash(gl, 13 ,92 );
                  DrawSlash(gl, 13 ,94 );
-                 animation(balls,0,"red");
-                 animation(balls,2,"red");
-                 animation(balls,4,"blue");
-                 animation(balls,6,"blue");
-                 Hori_animation(balls,7,"blue");
-                 Hori_animation(balls,3,"red");
-
-        }
-
-    }
-//    public void initializeBalls() {
-//        for (int i = 0; i < 8; i++) {
-//            if (i < 4) {
-//                if (i % 2 == 0) {
-//                    Ball b = new Ball(80, (i == 2) ? 80 : 25, textures.length - 5);
-//                    balls.add(b);
-//                } else {
-//                    Ball b = new Ball((i == 1) ? 55 : 75, 50, textures.length - 5);
-//                    balls.add(b);
-//                }
-//            } else {
-//                if (i % 2 == 0) {
-//                    Ball b = new Ball(20, (i == 6) ? 80 : 25, textures.length - 6);
-//                    balls.add(b);
-//                }
-//                else {
-//                    Ball b = new Ball((i == 5) ? 45 : 25, 50, textures.length - 6);
-//                    balls.add(b);
-//                }
-//            }
-//            X_oldPosi[i] = balls.get(i).x;
-//            Y_oldPosi[i] = balls.get(i).y;
-//            increaseX[i] = false;
-//            increaseY[i] = false;
-//            lower[i] = 21;
-//            upper[i] = 20;
-//            onetime[i] = true;
-//        }
-//    }
-
-    public void drawHighScore(String highScore) {
-
-    }
-    public double sqrdDistance(double x, double y, double x1, double y1){
-        return Math.pow(x-x1,2)+Math.pow(y-y1,2);
-    }
-
-    public boolean areTheyClose(double x, double y, double x1, double y1){
-        if(sqrdDistance(x,y,x1,y1)<=20){
-            return true;
-        }
-        return false;
-    }
-    public void holdingFlag(ArrayList <Ball> balls ){
-        if(areTheyClose(balls.get(1).x,balls.get(1).y,xFlag2,yFlag2)) {
-            xFlag2 = balls.get(1).x;
-            yFlag2 = balls.get(1).y;
-        }
-        if(balls.get(1).x>50) {
-            xFlag2 = 5;
-            yFlag2= 50;
-      // DrawDigits(gl , 50 , 80 , 1 , 2 ,2);
-        }
-    }
-    public void holdingFlag1(ArrayList <Ball> balls ){
-        if(areTheyClose(balls.get(5).x,balls.get(5).y,xFlag1,yFlag1)) {
-            xFlag1 = balls.get(5).x;
-            yFlag1 = balls.get(5).y;
-        }
-        if(balls.get(5).x<50) {
-            xFlag1 = 95;
-            yFlag1= 50;
-            // DrawDigits(gl , 50 , 80 , 1 , 2 ,2);
+              break;
+            case 31 :   // Multi (Medium)
+                drawBack(gl);
+                if (initiallevel){
+                    levelll(2);
+                    initiallevel= false ;
+                }
+                level_2 =new Level(balls,flags,e,2);
+                level_2.init(gl,textures);
+                handleKeyPress();
+                DrawScore(gl ,3,93);
+                drawHandleTimer(gl,320,650);
+                DrawSlash(gl, 13 ,92 );
+                DrawSlash(gl, 13 ,94 );
         }
 
     }
     public void handleKeyPress() {
         // To track the current step in xRB_steps
         double lengthStep =0.55;
-        if (whatdraw == 1){
+        // AI
+        if (whatdraw == 1 || whatdraw == 2){
         if (true) {
             // Add the target's position to the steps list while following
             if (timeToFollow > 0) {
@@ -439,7 +302,6 @@ public class AnimEventListener extends AnimationListener {
 
                 // Move to the next step in the next frame
                 stepIndex++;
-
                 // Reset timeToFollow if the tracking finishes
                 if (stepIndex == xRB_steps.size()) {
 //                    timeToFollow = 10;  // Reset for the next sequence
@@ -449,7 +311,7 @@ public class AnimEventListener extends AnimationListener {
             }
         }
         }
-
+   // Player_1
         if (isKeyPressed(KeyEvent.VK_LEFT)) {
             balls.get(1).x-=lengthStep;
             if( balls.get(1).x <= 2.5)
@@ -471,8 +333,8 @@ public class AnimEventListener extends AnimationListener {
                 balls.get(1).y =2.5;
         }
 
-
-if (whatdraw == 30 ){
+// Player_2 Multi (Easy , Medium ).
+if (whatdraw == 30 || whatdraw == 31){
         //----------------------------------------------
         if (isKeyPressed(KeyEvent.VK_A)) {
             balls.get(5).x-=lengthStep;
@@ -496,132 +358,6 @@ if (whatdraw == 30 ){
         }
     }
 }
-    public void Hori_animation(ArrayList<Ball> balls,int index,String color){
-        Ball b= balls.get(index);
-        double step=0.6;
-        ifblue(color,index);
-
-        if(!increaseX[index])
-            b.x-=step;
-
-        if(b.x<=X_oldPosi[index]-upper[index] && b.x >= X_oldPosi[index]-lower[index] ) {
-            increaseX[index]= (color == "blue")? false:true;
-        }
-
-        if(increaseX[index])
-            b.x+=step;
-
-        if(b.x<=X_oldPosi[index]+0.5 && b.x >= X_oldPosi[index]-0.5 )
-            increaseX[index]= (color == "blue")? true:false;
-//        System.out.println(b.x + " "+(X_oldPosi[index]-upper) +" "+ (  X_oldPosi[index]-lower));
-        System.out.println(upper+" "+ lower);
-//        System.out.println(increaseX[index]);
-    }
-    public void ifblue(String color ,int index){
-        if(color == "blue"&& onetime[index]){
-            upper[index]=-21;
-            lower[index]=-20;
-            increaseX[index]=true;
-            onetime[index]=false;
-        }
-    }
-    public void Vert_animation(ArrayList<Ball> balls,int index){
-        Ball b= balls.get(index);
-        double step=0.6;
-        if(!increaseY[index])
-            b.y-=step;
-
-        if(b.y<=Y_oldPosi[index]-10 && b.y >= Y_oldPosi[index]-11 )
-            increaseY[index]=true;
-
-        if(increaseY[index])
-            b.y+=step;
-
-        if(b.y<=Y_oldPosi[index]+0.5 && b.y >= Y_oldPosi[index]-0.5 )
-            increaseY[index]=false;
-
-    }
-    public void animation(ArrayList<Ball> balls,int index,String color) {
-        double step=0.55;
-
-        ifblue(color,index);
-
-        Ball b = balls.get(index);
-        if (!increaseX[index]) {
-            b.x-=step;
-            if (!increaseY[index]) {
-                b.y-=step;
-                if (b.y <= Y_oldPosi[index] - 8 && b.y >=Y_oldPosi[index] -9) {
-                    increaseY[index] = true;
-                }
-            }
-            else {
-                b.y+=step;
-                if (b.y <= Y_oldPosi[index]+0.75 && b.y >= Y_oldPosi[index]-0.75  ) {
-                    increaseY[index] = false;
-                }
-            }
-
-        }
-        else {
-            b.x+=step;
-            if (!increaseY[index]) {
-                b.y-=step;
-                if (b.y <= Y_oldPosi[index] - 7 && b.y >=Y_oldPosi[index] -8) {
-                    increaseY[index] = true;
-                }
-            }
-            else {
-                b.y+=step;
-                if (b.y <= Y_oldPosi[index]+0.75 && b.y >= Y_oldPosi[index]-0.75  ) {
-                    increaseY[index] = false;
-                }
-            }
-
-        }
-        if (b.x<= X_oldPosi[index]-upper[index] &&b.x>= X_oldPosi[index]-lower[index] ){
-            increaseX[index]=(color=="blue")? false :true;
-            System.out.println("hello");
-        }
-
-        if (b.x>= X_oldPosi[index]-0.75 &&b.x<= X_oldPosi[index]+0.75){
-            increaseX[index]=(color=="blue")? true :false;;
-        }
-        System.out.println(b.x +" "+ (X_oldPosi[index]-upper[index])+" "+ ( X_oldPosi[index]-lower[index])+" "+increaseX[index] );
-
-    }
-    private int currentNumber = 0;
-    public void DrawPlayerScore(GL gl, int x, int y, ArrayList<Ball> balls) {
-        holdingFlag(balls);
-        if (  currentNumber < 3 && xFlag2>49.3) {
-            currentNumber++;
-        }
-        TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 25));
-        textRenderer.beginRendering(600, 700);
-        textRenderer.draw(Integer.toString(currentNumber), x, y);
-        textRenderer.endRendering();
-    }
-//    private int currentNumber2 = 0;
-//    public void DrawPlayerScore2(GL gl, int x, int y, ArrayList<Ball> balls) {
-//        holdingFlag(balls);
-//        if (  currentNumber < 3 && areTheyClose(x,y,x,y)) {
-//            currentNumber++;
-//        }
-//        TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 25));
-//        textRenderer.beginRendering(600, 700);
-//        textRenderer.draw(Integer.toString(currentNumber), x, y);
-//        textRenderer.endRendering();
-//    }
-
-
-//handle the end of the game
-
-//    public void gameIsover (GL gl, int x ,int y){
-//        if (currentNumber ==3 || timer == 0 ){
-//        isfinished = true;
-//
-//        }
-//    }
 
     public void DrawScore(GL gl, int x, int y) {
 
@@ -634,37 +370,9 @@ if (whatdraw == 30 ){
         int[] array1 = {34};
         drawSprite(gl, x , y, array1[0], 1, 1);
     }
-
-    public void resturnTheFlag(ArrayList<Ball> balls){
-        Ball ball = balls.get(1);
-        for(Ball b: balls) {
-            if (b == ball) continue;
-            if (areTheyClose(b.x, b.y, ball.x, ball.y)) {
-                xFlag2 = 5;
-                yFlag2 = 50;
-            }
-        }
-    }
-    public void resturnTheFlag1(ArrayList<Ball> balls){
-        Ball ball = balls.get(5);
-        for(Ball b: balls) {
-            if (b == ball) continue;
-            if (areTheyClose(b.x, b.y, ball.x, ball.y)) {
-                xFlag1 = 95;
-                yFlag1 = 50;
-            }
-        }
-    }
     public void resetGame() {
     }
 
-    private void drawBox(GL gl, TextRenderer textRenderer, String massege, int index) {
-
-    }
-
-    private void Render(TextRenderer textRenderer, int x, int y, String messege, int fontSize) {
-
-    }
 
     @Override
     public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int i2, int i3) {
@@ -708,24 +416,17 @@ if (whatdraw == 30 ){
 
         double x = e.getX();
         double y = e.getY();
-
-//        System.out.println(x + " " + y);
-
         Component c = e.getComponent();
         double width = c.getWidth();
         double height = c.getHeight();
-//        System.out.println(width + " " + height);
-
         xPosition = (int) ((x / width) * 100);
         yPosition = ((int) ((y / height) * 100));
         yPosition = 100 - yPosition;
-
-       System.out.println("x " + xPosition + " y " + yPosition);
 //---------------------------------------------------------------------------------Levels
         if (whatdraw == 4) {
             if (xPosition >= 40 && xPosition <= 60 && yPosition >= 66 && yPosition <= 75) {
                 playSE(3);
-                if (isMultiPlayer == false) {
+                if (!isMultiPlayer) {
                     whatdraw = 1;
                     levelAsString = "Easy";
                 }
@@ -736,8 +437,14 @@ if (whatdraw == 30 ){
             }
             if (xPosition >= 40 && xPosition <= 60 && yPosition >= 55 && yPosition <= 63) {
                 playSE(3);
-             //   whatdraw = 1;
-                levelAsString = "Medium";
+                if (!isMultiPlayer) {
+                    whatdraw = 2;
+                    levelAsString = "Medium";
+                }
+                else {
+                    whatdraw = 31;
+                    levelAsString = "Medium ";
+                }
             }
             if (xPosition >= 40 && xPosition <= 60 && yPosition >= 42 && yPosition <= 50) {
                 playSE(3);
@@ -746,16 +453,12 @@ if (whatdraw == 30 ){
             }
         }
 //-------------------------------------------------------------------------------------------Menu (Home Page )
-
             if (whatdraw == 3) {
             if (xPosition >= 80 && xPosition <= 99 && yPosition >= 4 && yPosition <= 7) {
                 whatdraw = 0;
                 playSE(3);
             }
         }
-
-
-
         if (whatdraw == 0) {
         // High_Score
             if (xPosition >= 92 && xPosition <= 98 && yPosition >= 2 && yPosition <= 8) {
@@ -906,66 +609,3 @@ if (whatdraw == 30 ){
         return (1 - y / height) * 100;
     }
 }
-
-//class Ball{
-//
-//    public Ball(double x, double y, int textureNumber) {
-//        this.x = x;
-//        this.y = y;
-//        this.textureNumber = textureNumber;
-//
-//    }
-//
-//    public double getX() {
-//        return x;
-//    }
-//
-//    public void setX(double x) {
-//        this.x = x;
-//    }
-//
-//    public double getY() {
-//        return y;
-//    }
-//
-//    public void setY(double y) {
-//        this.y = y;
-//    }
-//    public void drawSprite(GL gl, double x, double y, int index, float xScale, float yScale) {
-//        int MAX_WIDTH=100;
-//        int MAX_HEIGHT=100;
-//
-//        gl.glEnable(GL.GL_BLEND);
-//        gl.glBindTexture(GL.GL_TEXTURE_2D, AnimEventListener.textures[textureNumber]);    // Turn Blending On
-//
-//        gl.glPushMatrix();
-//        gl.glTranslated(x / (MAX_WIDTH / 2.0) - 1, y / (MAX_HEIGHT / 2.0) - 1, 0);
-//        gl.glScaled(0.01 * xScale, 0.01 * yScale, 1);
-////        System.out.println(x +" " + y);
-//        gl.glBegin(GL.GL_QUADS);
-//        // Front Face
-//        gl.glTexCoord2f(0.0f, 0.0f);
-//        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-//        gl.glTexCoord2f(1.0f, 0.0f);
-//        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-//        gl.glTexCoord2f(1.0f, 1.0f);
-//        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-//        gl.glTexCoord2f(0.0f, 1.0f);
-//        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-//        gl.glEnd();
-//        gl.glPopMatrix();
-//
-//        gl.glDisable(GL.GL_BLEND);
-//    }
-//    double x,y;
-//
-//    int textureNumber;
-//}
-//class steps {
-//  double x,y;
-//
-//    public steps(double x, double y) {
-//        this.x = x;
-//        this.y = y;
-//    }
-//}
