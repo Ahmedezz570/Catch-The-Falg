@@ -9,7 +9,7 @@
         Ball b;
         flag f;
         TextRenderer textRenderer = new TextRenderer(Font.decode("PLAIN 100"));
-
+        int maxScore = 3 ;
     int temp = 0 ;
         public entity(Ball b, flag f) {
             this.b = b;
@@ -37,19 +37,23 @@
                 f.y = b.y;
             }
 
-            if(b.x>50) {
+            if(b.x>50 && score < maxScore) {
                 if (f.x > 50){
                     score++;
-
                 }
                f.x = 5;
                 f.y= 50;
             }
+            TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 20));
             textRenderer.beginRendering(700, 700);
             textRenderer.draw( "" +score,(int)  100,(int) 630);
             textRenderer.endRendering();
-
         }
+
+
+
+
+
 //        public void holdingFlag1(){
 //            if(areTheyClose(b.x,b.y,f.x,f.y)) {
 //                f.x = b.x;
@@ -81,5 +85,8 @@
                     f.y = 50;
                 }
             }
+        }
+        public int getScore() {
+            return score;
         }
     }
