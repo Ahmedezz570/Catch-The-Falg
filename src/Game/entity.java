@@ -2,7 +2,7 @@ package Game;
 
 import java.util.ArrayList;
 
-public class entity {
+public class    entity {
     Ball b;
     flag f;
 
