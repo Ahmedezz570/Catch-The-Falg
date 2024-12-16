@@ -177,6 +177,7 @@ public class AnimEventListener extends AnimationListener {
             isfinished = true;
             score = 30;
         }
+        TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 18));
         textRenderer.beginRendering(700, 700);
         textRenderer.draw( "" +timer,(int)  x,(int) y);
         textRenderer.endRendering();
@@ -274,7 +275,8 @@ public class AnimEventListener extends AnimationListener {
                 drawSprite(gl, xFlag2,yFlag2,textures.length-4,5,5);
                 drawSprite(gl, xFlag1,yFlag1,textures.length-3,5,5);
                 DrawScore(gl ,3,93);
-                drawHandleTimer(gl,300,620);
+                DrawPlayerScore(gl,90,645,balls);
+                drawHandleTimer(gl,320,650);
                 DrawSlash(gl, 13 ,92 );
                 DrawSlash(gl, 13 ,94 );
                 break;
@@ -379,7 +381,6 @@ public class AnimEventListener extends AnimationListener {
             yFlag2= 50;
       // DrawDigits(gl , 50 , 80 , 1 , 2 ,2);
         }
-
     }
     public void holdingFlag1(ArrayList <Ball> balls ){
         if(areTheyClose(balls.get(5).x,balls.get(5).y,xFlag1,yFlag1)) {
@@ -563,6 +564,17 @@ if (whatdraw == 30 ){
         }
         System.out.println(b.x +" "+ (X_oldPosi[index]-upper[index])+" "+ ( X_oldPosi[index]-lower[index])+" "+increaseX[index] );
 
+    }
+    private int currentNumber = 0;
+    public void DrawPlayerScore(GL gl, int x, int y, ArrayList<Ball> balls) {
+        holdingFlag(balls);
+        if (  currentNumber < 3 && areTheyClose (x,y,x,y)) {
+            currentNumber++;
+        }
+        TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 25));
+        textRenderer.beginRendering(600, 700);
+        textRenderer.draw(Integer.toString(currentNumber), x, y);
+        textRenderer.endRendering();
     }
     public void DrawScore(GL gl, int x, int y) {
 
