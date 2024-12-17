@@ -7,6 +7,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.glu.GLU;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -25,7 +26,7 @@ public class AnimEventListener extends AnimationListener {
     int whatdraw = 0;
     boolean isfinished = false;
     private int timer = 60;
-    private int score =0;
+
     private int timerHandler = 0;
     int timeToFollow=10;
     int stepIndex = 0;
@@ -41,6 +42,9 @@ public class AnimEventListener extends AnimationListener {
     boolean mute = false;
     boolean show = false;
     boolean paused = false;
+
+    int remainigTime = 0;
+
     public static String[] textureNames = {
             "Menu//PLAYBUTTON.png", "Menu//SETTINGS.png", "Menu//HOW  PLAY.png",
             "Menu//EXITBUTTON.png","Menu//SINGLE PLAYER.png", "Menu//MULITI PLAYERS .png",
@@ -128,20 +132,30 @@ public class AnimEventListener extends AnimationListener {
             handleKeyPress();
             timerHandler++;
             if (timerHandler == 24) {  // Assuming 24 frames per second
-
                 timer--;
                 timerHandler = 0;
+                if (e.score == e.maxScore) {
+                    remainigTime = timer;
+                }
+            }
+            if (e.score == 3) {
+                JOptionPane.showMessageDialog(null,"Win","win",JOptionPane.YES_OPTION);
+                whatdraw = 0 ;
+                remainigTime = timer;
+                timer = 0;
+                isfinished = true;
             }
         } else if (timer == 0 && !isfinished) {
             isfinished = true;
-            score = 30;
+            JOptionPane.showMessageDialog(null,"LOSE","lose",JOptionPane.YES_OPTION);
+            whatdraw = 0;
         }
+
         TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 18));
         textRenderer.beginRendering(700, 700);
-        textRenderer.draw( "" +timer,(int)  x,(int) y);
+        textRenderer.draw("" + timer, (int) x, (int) y);
         textRenderer.endRendering();
     }
-
     @Override
     public void init(GLAutoDrawable glAutoDrawable) {
         GL gl = glAutoDrawable.getGL();
