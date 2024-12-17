@@ -310,7 +310,7 @@ public class AnimEventListener extends AnimationListener {
 
     }
      public void pause (GL gl ){
-    drawSprite(gl, 90, 90, textures[textures.length - 8] , 8, 8);
+    drawSprite(gl, 90, 90, textures[textures.length - 7] , 8, 8);
 }
     @Override
     public void display(GLAutoDrawable glAutoDrawable) {
