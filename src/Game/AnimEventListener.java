@@ -11,12 +11,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import Sound.Sound;
+import java.util.Collections;
+import java.io.PrintWriter;
+import java.io.BufferedReader;
 
 public class AnimEventListener extends AnimationListener {
+    ArrayList<Integer> highScores = new ArrayList<>();
     double Xmouse,Ymouse;
     public static final int MAX_WIDTH = 100, MAX_HEIGHT = 100; // set max height and width to translate sprites using integers
     public String levelAsString = "Easy";
@@ -144,11 +149,18 @@ public class AnimEventListener extends AnimationListener {
                 remainigTime = timer;
                 timer = 0;
                 isfinished = true;
+                updateHighScores(e.score + remainigTime);
             }
-        } else if (timer == 0 && !isfinished) {
+            if(e.score2==3){
+                JOptionPane.showMessageDialog(null,"Lose","lose",JOptionPane.YES_OPTION);
+                whatdraw = 0;
+                updateHighScores(e.score);
+            }
+        } else if (timer == 0 && !isfinished ) {
             isfinished = true;
             JOptionPane.showMessageDialog(null,"LOSE","lose",JOptionPane.YES_OPTION);
             whatdraw = 0;
+            updateHighScores(e.score);
         }
 
         TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 18));
@@ -156,6 +168,52 @@ public class AnimEventListener extends AnimationListener {
         textRenderer.draw("" + timer, (int) x, (int) y);
         textRenderer.endRendering();
     }
+    public void updateHighScores(int newScore) {
+        highScores.add(newScore);
+        Collections.sort(highScores, Collections.reverseOrder());
+
+        if (highScores.size() > 10) {
+            highScores = new ArrayList<>(highScores.subList(0, 10));
+        }
+    }
+    public void saveScoresToFile() {
+        try (PrintWriter writer = new PrintWriter("highscores.txt")) {
+            for (int score : highScores) {
+                writer.println(score);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadScoresFromFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("highscores.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                highScores.add(Integer.parseInt(line));
+            }
+            Collections.sort(highScores, Collections.reverseOrder());
+        } catch (IOException e) {
+            System.out.println("No previous scores found.");
+        }
+    }
+
+    public void drawHighScores(GL gl) {
+        TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 20));
+        textRenderer.beginRendering(700, 700);
+
+        int yPosition = 600;
+        textRenderer.draw("Top 10 Scores:", 300, yPosition);
+        yPosition -= 30;
+
+        for (int i = 0; i < highScores.size(); i++) {
+            textRenderer.draw((i + 1) + ". " + highScores.get(i), 300, yPosition);
+            yPosition -= 30;
+        }
+
+        textRenderer.endRendering();
+    }
+
     @Override
     public void init(GLAutoDrawable glAutoDrawable) {
         GL gl = glAutoDrawable.getGL();
@@ -249,11 +307,13 @@ public class AnimEventListener extends AnimationListener {
                 level_ =new Level(balls,flags,e,1);
                 level_.init(gl,textures,1);
 //                handleKeyPress();
-                DrawScore(gl ,3,93);
+                DrawScore(gl ,4,93);
                 drawHandleTimer(320,650);
-                DrawSlash(gl, 13 ,92 );
-                DrawSlash(gl, 13 ,94 );
-
+                DrawSlash(gl, 14 ,92 );
+                DrawSlash(gl, 14 ,94 );
+                DrawScore(gl ,80,93);
+                DrawSlash(gl, 90 ,92 );
+                DrawSlash(gl, 90 ,94 );
                 break;
             case 2:    // Single (Medium)
                 drawBack(gl);
@@ -272,7 +332,7 @@ public class AnimEventListener extends AnimationListener {
             case 3: // High Score
                 drawBackground(gl);
                 drawSprite(gl, MAX_WIDTH - 10, 5, 13, 12, 6);
-
+                drawHighScores(gl);
                 break;
 
             case 4: // levels....
@@ -292,10 +352,13 @@ public class AnimEventListener extends AnimationListener {
 //                 level_ =new Level(balls,flags,e,1);
                 level_=new Level(balls,flags,e,e2,1);
                  level_.init(gl,textures,30);
-                 DrawScore(gl ,3,93);
+                 DrawScore(gl ,4,93);
                  drawHandleTimer(300,620);
-                 DrawSlash(gl, 13 ,92 );
-                 DrawSlash(gl, 13 ,94 );
+                 DrawSlash(gl, 14 ,92 );
+                 DrawSlash(gl, 14 ,94 );
+                DrawScore(gl ,80,93);
+                DrawSlash(gl, 90 ,92 );
+                DrawSlash(gl, 90 ,94 );
               break;
             case 31 :   // Multi (Medium)
                 drawBack(gl);
@@ -310,6 +373,9 @@ public class AnimEventListener extends AnimationListener {
                 drawHandleTimer(320,650);
                 DrawSlash(gl, 13 ,92 );
                 DrawSlash(gl, 13 ,94 );
+                DrawScore(gl ,80,93);
+                DrawSlash(gl, 90 ,92 );
+                DrawSlash(gl, 90 ,94 );
         }
 
     }

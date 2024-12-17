@@ -74,6 +74,7 @@ public class Level {
         if(whatdraw == 30 || whatdraw==31){
             System.out.println("here");
             e2.holdingFlag1();
+            e2.scoreIncrement();
             e2.resturnTheFlag1(balls);
         }
 
