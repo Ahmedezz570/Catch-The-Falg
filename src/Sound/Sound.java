@@ -12,14 +12,10 @@ public class Sound {
     private float previousVolume = 0.0f;
 
     public Sound() {
-        soundURL[0] = getClass().getResource("../Game/Gui/StartSound.wav");
+
         soundURL[3] = getClass().getResource("../Assets/Sound/Click.wav");
-        soundURL[4] = getClass().getResource("../Assets/Sound/Bullets/pistol.wav");
-        soundURL[5] = getClass().getResource("../Assets/Sound/Bullets/emptygun.wav");
-        soundURL[6] = getClass().getResource("../Assets/Sound/Bullets/rifleReload.mp3");
-        soundURL[7] = getClass().getResource("../Assets/Sound/Zombies/zombieBite.wav");
-        soundURL[8] = getClass().getResource("../Assets/Sound/Zombies/zombiehit.wav");
-        soundURL[9] = getClass().getResource("../Assets/Sound/Zombies/Zombies.wav");
+
+        soundURL[9] = getClass().getResource("../Assets/Sound/The Verdant Grove LOOP.wav");
     }
 
     public void setFile(int i) {

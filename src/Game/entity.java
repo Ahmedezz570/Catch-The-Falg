@@ -67,6 +67,7 @@
                     f.x = 95;
                     f.y = 50;
                     score3 =true;
+                    score2++;
                     }
                 }
                 TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 25));
@@ -75,15 +76,15 @@
                 textRenderer.endRendering();
                 System.out.println(f.x);
             }
-        public void scoreIncrement() {
-            if (score3) {
-                score2++;
-                score3 = false; // Reset after increment
-                System.out.println("Score2 incremented to: " + score2);
-            } else {
-                System.out.println("Score3 is not set. No increment.");
-            }
-        }
+//        public void scoreIncrement() {
+//            if (score3) {
+//                score2++;
+//                score3 = false; // Reset after increment
+//                System.out.println("Score2 incremented to: " + score2);
+//            } else {
+//                System.out.println("Score3 is not set. No increment.");
+//            }
+//        }
 
         public void resturnTheFlag1(ArrayList<Ball> balls){
             for(Ball b1: balls) {

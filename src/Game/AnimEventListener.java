@@ -49,7 +49,7 @@ public class AnimEventListener extends AnimationListener {
     boolean paused = false;
 
     int remainigTime = 0;
-
+    String username ;
     public static String[] textureNames = {
             "Menu//PLAYBUTTON.png", "Menu//SETTINGS.png", "Menu//HOW  PLAY.png",
             "Menu//EXITBUTTON.png","Menu//SINGLE PLAYER.png", "Menu//MULITI PLAYERS .png",
@@ -71,9 +71,6 @@ public class AnimEventListener extends AnimationListener {
 
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     public static int[] textures = new int[textureNames.length];
-
-
-
     public void drawBackground(GL gl) {
         gl.glEnable(GL.GL_BLEND);
         gl.glBindTexture(GL.GL_TEXTURE_2D, textures[textures.length - 2]);
@@ -91,7 +88,6 @@ public class AnimEventListener extends AnimationListener {
         gl.glPopMatrix();
         gl.glDisable(GL.GL_BLEND);
     }
-
     public void drawBack(GL gl) {
         gl.glEnable(GL.GL_BLEND);
         gl.glBindTexture(GL.GL_TEXTURE_2D, textures[textures.length - 1]);
@@ -144,17 +140,26 @@ public class AnimEventListener extends AnimationListener {
                 }
             }
             if (e.score == 3) {
-                JOptionPane.showMessageDialog(null,"Win","win",JOptionPane.YES_OPTION);
+                JOptionPane.showMessageDialog(null,"Win Player_1","win",JOptionPane.YES_OPTION);
                 whatdraw = 0 ;
                 remainigTime = timer;
                 timer = 0;
                 isfinished = true;
                 updateHighScores(e.score + remainigTime);
             }
-            if(e.score2==3){
-                JOptionPane.showMessageDialog(null,"Lose","lose",JOptionPane.YES_OPTION);
-                whatdraw = 0;
-                updateHighScores(e.score);
+            if (whatdraw== 30 ) {
+                if (e2.score2 == 3) {
+                    JOptionPane.showMessageDialog(null, "win Player_2", "win", JOptionPane.YES_OPTION);
+                    whatdraw = 0;
+                    updateHighScores(e.score);
+                }
+            }
+            else if ( whatdraw == 31){
+                if (e2.score2 == 3) {
+                    JOptionPane.showMessageDialog(null, "win Player_2", "win", JOptionPane.YES_OPTION);
+                    whatdraw = 0;
+                    updateHighScores(e.score);
+                }
             }
         } else if (timer == 0 && !isfinished ) {
             isfinished = true;
@@ -244,7 +249,9 @@ public class AnimEventListener extends AnimationListener {
             flag f =new flag((i==1)?95:5,50,(i==1)?textures.length-3:textures.length-4);
             flags.add(f);
         }
-    }
+        playSE(9);
+
+        }
    boolean initiallevel = true ;
     public void levelll (int level){
         if (level == 1 && whatdraw!=30){
@@ -252,12 +259,20 @@ public class AnimEventListener extends AnimationListener {
             level_01.create(textures);
             e=new entity(balls.get(1),flags.get(0));
             initiallevel = false;
+            username = JOptionPane.showInputDialog("Enter your name: ");
+            if (username == null || username.trim().isEmpty()) {
+                username = "User 1";
+            }
         }
         else if (level == 2&& whatdraw!=31){
             Level level_02=new Level(balls,2);
             level_02.create(textures);
             e=new entity(balls.get(1),flags.get(0));
             initiallevel = false;
+            username = JOptionPane.showInputDialog("Enter your name: ");
+            if (username == null || username.trim().isEmpty()) {
+                username = "User 1";
+            }
         }
         else if(level == 1  && whatdraw == 30 ){
             Level level_01=new Level(balls,1);
@@ -266,6 +281,14 @@ public class AnimEventListener extends AnimationListener {
             e2=new entity(balls.get(5),flags.get(1));
             initiallevel = false;
             System.out.println(" hello ");
+            username = JOptionPane.showInputDialog("Enter your name: ");
+            if (username == null || username.trim().isEmpty()) {
+                username = "User 1";
+            }
+            username = JOptionPane.showInputDialog("Enter your name: ");
+            if (username == null || username.trim().isEmpty()) {
+                username = "User 2";
+            }
         }
         else if((level == 2) && ( whatdraw == 31)){
             Level level_2=new Level(balls,2);
@@ -274,6 +297,14 @@ public class AnimEventListener extends AnimationListener {
             e2=new entity(balls.get(5),flags.get(1));
             initiallevel = false;
             System.out.println(" hello 2");
+            username = JOptionPane.showInputDialog("Enter your name: ");
+            if (username == null || username.trim().isEmpty()) {
+                username = "User 1";
+            }
+            username = JOptionPane.showInputDialog("Enter your name: ");
+            if (username == null || username.trim().isEmpty()) {
+                username = "User 2";
+            }
         }
 
     }
@@ -314,6 +345,7 @@ public class AnimEventListener extends AnimationListener {
                 DrawScore(gl ,80,93);
                 DrawSlash(gl, 90 ,92 );
                 DrawSlash(gl, 90 ,94 );
+
                 break;
             case 2:    // Single (Medium)
                 drawBack(gl);
@@ -328,6 +360,7 @@ public class AnimEventListener extends AnimationListener {
                 drawHandleTimer(320,650);
                 DrawSlash(gl, 13 ,92 );
                 DrawSlash(gl, 13 ,94 );
+
                 break;
             case 3: // High Score
                 drawBackground(gl);
