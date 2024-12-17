@@ -62,7 +62,8 @@ public class AnimEventListener extends AnimationListener {
             "Digits//4.png", "Digits//5.png", "Digits//6.png", "Digits//7.png",
             "Digits//8.png", "Digits//9.png",
             "Alphabet//s.png", "Alphabet//c.png", "Alphabet//o.png",
-            "Alphabet//r.png", "Alphabet//e.png", "Digits//slash.png","flags//blueball.png",
+            "Alphabet//r.png", "Alphabet//e.png", "Digits//slash.png","Menu//pause2.png",
+            "Menu//pause.png","flags//blueball.png",
             "flags//redball.png","flags//blueflag.png","flags//redflag.png",
             "Menu//Background.png","Menu//back.png"
 
@@ -308,6 +309,9 @@ public class AnimEventListener extends AnimationListener {
         }
 
     }
+     public void pause (GL gl ){
+    drawSprite(gl, 90, 90, textures[textures.length - 8] , 8, 8);
+}
     @Override
     public void display(GLAutoDrawable glAutoDrawable) {
         GL gl = glAutoDrawable.getGL();
@@ -345,7 +349,7 @@ public class AnimEventListener extends AnimationListener {
                 DrawScore(gl ,80,93);
                 DrawSlash(gl, 90 ,92 );
                 DrawSlash(gl, 90 ,94 );
-
+ pause(gl);
                 break;
             case 2:    // Single (Medium)
                 drawBack(gl);
@@ -360,7 +364,7 @@ public class AnimEventListener extends AnimationListener {
                 drawHandleTimer(320,650);
                 DrawSlash(gl, 13 ,92 );
                 DrawSlash(gl, 13 ,94 );
-
+ pause(gl);
                 break;
             case 3: // High Score
                 drawBackground(gl);
@@ -392,6 +396,7 @@ public class AnimEventListener extends AnimationListener {
                 DrawScore(gl ,80,93);
                 DrawSlash(gl, 90 ,92 );
                 DrawSlash(gl, 90 ,94 );
+                 pause(gl);
               break;
             case 31 :   // Multi (Medium)
                 drawBack(gl);
@@ -409,6 +414,28 @@ public class AnimEventListener extends AnimationListener {
                 DrawScore(gl ,80,93);
                 DrawSlash(gl, 90 ,92 );
                 DrawSlash(gl, 90 ,94 );
+                 pause(gl);
+                break;
+
+                  case 88:
+                drawBack(gl);
+                drawSprite(gl, 50, 50, textures.length-8, 30, 30);
+
+    break;
+        case 89:
+                drawBack(gl);
+                drawSprite(gl, 50, 50, textures.length-8, 30, 30);
+                break;
+    
+        case 90:
+                drawBack(gl);
+                drawSprite(gl, 50, 50, textures.length-8, 30, 30);
+                break;
+    
+        case 91:
+                drawBack(gl);
+                drawSprite(gl, 50, 50, textures.length-8, 30, 30);
+                break;
         }
 
     }
@@ -553,6 +580,103 @@ if (whatdraw == 30 || whatdraw == 31){
         xPosition = (int) ((x / width) * 100);
         yPosition = ((int) ((y / height) * 100));
         yPosition = 100 - yPosition;
+        if (whatdraw == 1){
+                  if (xPosition >= 88 && xPosition <= 92 && yPosition >= 88 && yPosition <= 92) {
+                        playSE(3);
+                        whatdraw = 88;
+                  }
+              }
+              if (whatdraw == 88){
+                  if (xPosition >= 38 && xPosition <= 60 && yPosition >= 37 && yPosition <= 43) {
+                      playSE(3);
+                     whatdraw = 0 ;
+                  }
+                  if (xPosition >= 38 && xPosition <= 60 && yPosition >= 47 && yPosition <= 53) {
+                      playSE(3);
+                      whatdraw =  1;
+                      timer = 60;
+                      score = 0 ;
+                  }
+                  if (xPosition >= 38 && xPosition <= 60 && yPosition >= 56 && yPosition <= 62) {
+                      playSE(3);
+                      whatdraw =  1;
+                  }
+
+
+              }
+              if (whatdraw == 2){
+                  if (xPosition >= 88 && xPosition <= 92 && yPosition >= 88 && yPosition <= 92) {
+                        playSE(3);
+                        whatdraw = 89;
+                  }
+              }
+              if (whatdraw == 89){
+                  if (xPosition >= 38 && xPosition <= 60 && yPosition >= 37 && yPosition <= 43) {
+                      playSE(3);
+                     whatdraw = 0 ;
+                  }
+                  
+                  if (xPosition >= 38 && xPosition <= 60 && yPosition >= 47 && yPosition <= 53) {
+                      playSE(3);
+                      whatdraw =  2;
+                      timer = 60;
+                      score = 0 ;
+                  }
+                  if (xPosition >= 38 && xPosition <= 60 && yPosition >= 57 && yPosition <= 63) {
+                      playSE(3);
+                      whatdraw =  2;
+                  }
+//
+//
+              }
+              if (whatdraw == 30){
+                  if (xPosition >= 88 && xPosition <= 92 && yPosition >= 88 && yPosition <= 92) {
+                        playSE(3);
+                        whatdraw = 90;
+                  }
+              }
+              if (whatdraw == 90){
+                  if (xPosition >= 38 && xPosition <= 60 && yPosition >= 37 && yPosition <= 43) {
+                      playSE(3);
+                     whatdraw = 0 ;
+                  }
+                  if (xPosition >= 38 && xPosition <= 60 && yPosition >= 47 && yPosition <= 53) {
+                      playSE(3);
+                      whatdraw =  30;
+                      timer = 60;
+                      score = 0 ;
+                  }
+                  if (xPosition >= 38 && xPosition <= 60 && yPosition >= 56 && yPosition <= 62) {
+                      playSE(3);
+                      whatdraw =  30;
+                  }
+//
+//
+              }
+              if (whatdraw == 31){
+                  if (xPosition >= 88 && xPosition <= 92 && yPosition >= 88 && yPosition <= 92) {
+                        playSE(3);
+                        whatdraw = 91;
+                  }
+              }
+              if (whatdraw == 91){
+                  if (xPosition >= 38 && xPosition <= 60 && yPosition >= 37 && yPosition <= 43) {
+                      playSE(3);
+                     whatdraw = 0 ;
+                  }
+                  if (xPosition >= 38 && xPosition <= 60 && yPosition >= 47 && yPosition <= 53) {
+                      playSE(3);
+                      whatdraw =  31;
+                      timer = 60;
+                      score = 0 ;
+                  }
+                  if (xPosition >= 38 && xPosition <= 60 && yPosition >= 56 && yPosition <= 62) {
+                      playSE(3);
+                      whatdraw =  31;
+                  }
+
+
+              }
 //---------------------------------------------------------------------------------Levels
         if (whatdraw == 4) {
             if (xPosition >= 40 && xPosition <= 60 && yPosition >= 66 && yPosition <= 75) {
