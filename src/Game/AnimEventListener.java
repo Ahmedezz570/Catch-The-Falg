@@ -33,6 +33,7 @@ public class AnimEventListener extends AnimationListener {
     ArrayList<steps> xRB_steps=new ArrayList<>();
     ArrayList<flag> flags =new ArrayList<>();
     entity e;
+    entity e2;
     Level level_;
     Level  level_2 ;
     Menu menu = new Menu();
@@ -79,7 +80,6 @@ public class AnimEventListener extends AnimationListener {
         gl.glVertex3f(-1.0f, 1.0f, -1.0f);
         gl.glEnd();
         gl.glPopMatrix();
-
         gl.glDisable(GL.GL_BLEND);
     }
 
@@ -123,7 +123,7 @@ public class AnimEventListener extends AnimationListener {
 
         gl.glDisable(GL.GL_BLEND);
     }
-    public void drawHandleTimer(GL gl, double x, double y) {
+    public void drawHandleTimer(double x, double y) {
         if (timer > 0 && !isfinished) {
             handleKeyPress();
             timerHandler++;
@@ -175,18 +175,35 @@ public class AnimEventListener extends AnimationListener {
     }
    boolean initiallevel = true ;
     public void levelll (int level){
-        if (level == 1){
+        if (level == 1 && whatdraw!=30){
             Level level_01=new Level(balls,1);
             level_01.create(textures);
             e=new entity(balls.get(1),flags.get(0));
             initiallevel = false;
         }
-        else if (level == 2){
+        else if (level == 2&& whatdraw!=31){
             Level level_02=new Level(balls,2);
             level_02.create(textures);
             e=new entity(balls.get(1),flags.get(0));
             initiallevel = false;
         }
+        else if(level == 1  && whatdraw == 30 ){
+            Level level_01=new Level(balls,1);
+            level_01.create(textures);
+            e=new entity(balls.get(1),flags.get(0));
+            e2=new entity(balls.get(5),flags.get(1));
+            initiallevel = false;
+            System.out.println(" hello ");
+        }
+        else if((level == 2) && ( whatdraw == 31)){
+            Level level_2=new Level(balls,2);
+            level_2.create(textures);
+            e=new entity(balls.get(1),flags.get(0));
+            e2=new entity(balls.get(5),flags.get(1));
+            initiallevel = false;
+            System.out.println(" hello 2");
+        }
+
     }
     @Override
     public void display(GLAutoDrawable glAutoDrawable) {
@@ -199,12 +216,12 @@ public class AnimEventListener extends AnimationListener {
             case 0:
                 menu.drawMenu(gl);
                 if (mute == false) {
-                    System.out.println("unmute");
+//                    System.out.println("unmute");
 //                    menu.playsound("StartSound.mp3");
 //                    menu.mediaPlayer.setMute(false);
                 } else {
 //                    menu.mediaPlayer.setMute(true);
-                    System.out.println("mute");
+//                    System.out.println("mute");
                 }
 
                 break;
@@ -216,10 +233,10 @@ public class AnimEventListener extends AnimationListener {
                 }
 
                 level_ =new Level(balls,flags,e,1);
-                level_.init(gl,textures);
-                handleKeyPress();
+                level_.init(gl,textures,1);
+//                handleKeyPress();
                 DrawScore(gl ,3,93);
-                drawHandleTimer(gl,320,650);
+                drawHandleTimer(320,650);
                 DrawSlash(gl, 13 ,92 );
                 DrawSlash(gl, 13 ,94 );
 
@@ -231,10 +248,10 @@ public class AnimEventListener extends AnimationListener {
                     initiallevel= false ;
                 }
                 level_2 =new Level(balls,flags,e,2);
-                level_2.init(gl,textures);
-                handleKeyPress();
+                level_2.init(gl,textures,2);
+//                handleKeyPress();
                 DrawScore(gl ,3,93);
-                drawHandleTimer(gl,320,650);
+                drawHandleTimer(320,650);
                 DrawSlash(gl, 13 ,92 );
                 DrawSlash(gl, 13 ,94 );
                 break;
@@ -258,10 +275,11 @@ public class AnimEventListener extends AnimationListener {
                      levelll(1);
                      initiallevel= false ;
                  }
-                 level_ =new Level(balls,flags,e,1);
-                 level_.init(gl,textures);
+//                 level_ =new Level(balls,flags,e,1);
+                level_=new Level(balls,flags,e,e2,1);
+                 level_.init(gl,textures,30);
                  DrawScore(gl ,3,93);
-                 drawHandleTimer(gl,300,620);
+                 drawHandleTimer(300,620);
                  DrawSlash(gl, 13 ,92 );
                  DrawSlash(gl, 13 ,94 );
               break;
@@ -271,11 +289,11 @@ public class AnimEventListener extends AnimationListener {
                     levelll(2);
                     initiallevel= false ;
                 }
-                level_2 =new Level(balls,flags,e,2);
-                level_2.init(gl,textures);
-                handleKeyPress();
+                level_2 =new Level(balls,flags,e,e2,2);
+                level_2.init(gl,textures,31);
+//                handleKeyPress();
                 DrawScore(gl ,3,93);
-                drawHandleTimer(gl,320,650);
+                drawHandleTimer(320,650);
                 DrawSlash(gl, 13 ,92 );
                 DrawSlash(gl, 13 ,94 );
         }
@@ -600,7 +618,7 @@ if (whatdraw == 30 || whatdraw == 31){
     public void mouseMoved(MouseEvent e) {
         Xmouse = convertX(e.getX(), e.getComponent().getWidth());
         Ymouse = convertY(e.getY(), e.getComponent().getHeight());
-        System.out.println(Xmouse+" "+Ymouse);
+//        System.out.println(Xmouse+" "+Ymouse);
     }
     private double convertX(double x, double width) {
         return (x / width) * 100;

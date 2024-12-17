@@ -29,18 +29,13 @@
         int score = 0;
 
         public void holdingFlag(){
-
-
             if(areTheyClose(b.x, b.y,f.x,f.y)) {
-
                 f.x= b.x;
                 f.y = b.y;
             }
-
             if(b.x>50) {
                 if (f.x > 50){
                     score++;
-
                 }
                f.x = 5;
                 f.y= 50;
@@ -50,28 +45,29 @@
             textRenderer.endRendering();
 
         }
-//        public void holdingFlag1(){
-//            if(areTheyClose(b.x,b.y,f.x,f.y)) {
-//                f.x = b.x;
-//                f.y = b.y;
-//            }
-//            if(b.x<50) {
-//                f.x = 95;
-//                f.y = 50;
-//
-//            }
-//
-//        }
-//        public void resturnTheFlag1(ArrayList<Ball> balls){
+        public void holdingFlag1(){
+            if(areTheyClose(b.x,b.y,f.x,f.y)) {
+                f.x = b.x;
+                f.y = b.y;
+                System.out.println("they are close");
+            }
+            if(b.x<50) {
+                f.x = 95;
+                f.y = 50;
+
+            }
+            System.out.println("working");
+        }
+        public void resturnTheFlag1(ArrayList<Ball> balls){
 //            Ball ball = balls.get(5);
-//            for(Ball b: balls) {
-//                if (b == ball) continue;
-//                if (areTheyClose(b.x, b.y, ball.x, ball.y)) {
-//                    f.x = 95;
-//                    f.y = 50;
-//                }
-//            }
-//        }
+            for(Ball b1: balls) {
+                if (b1 == b) continue;
+                if (areTheyClose(b.x, b.y, b1.x, b1.y)) {
+                    f.x = 95;
+                    f.y = 50;
+                }
+            }
+        }
         public void resturnTheFlag(ArrayList<Ball>balls){
 
             for(Ball b1: balls) {

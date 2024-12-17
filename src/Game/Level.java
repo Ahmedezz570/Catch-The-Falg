@@ -9,8 +9,17 @@ public class Level {
 
     ArrayList<flag>flags;
     entity e;
+    entity e2;
 
     int level;
+
+    public Level(ArrayList<Ball> balls, ArrayList<flag> flags, entity e, entity e2, int level) {
+        this.balls = balls;
+        this.flags = flags;
+        this.e = e;
+        this.e2 = e2;
+        this.level = level;
+    }
 
     public Level(ArrayList<Ball> balls, ArrayList<flag> flags, entity e, int level) {
         this.balls = balls;
@@ -24,8 +33,8 @@ public class Level {
         this.level=level;
     }
 
-    public void init(GL gl, int [] textures){
-        if(level == 1) {
+    public void init(GL gl, int [] textures,int whatdraw){
+        if(level == 1 ) {
             for (int i = 0; i < balls.size(); i++) {
                 Ball b = balls.get(i);
                 b.drawSprite(gl, b.x, b.y, textures.length - 5, 4, 4);
@@ -58,9 +67,16 @@ public class Level {
             }
             e.holdingFlag();
             e.resturnTheFlag(balls);
+
 //            e.resturnTheFlag1(balls);
 //            e.holdingFlag1();
         }
+        if(whatdraw == 30 || whatdraw==31){
+            System.out.println("here");
+            e2.holdingFlag1();
+            e2.resturnTheFlag1(balls);
+        }
+
     }
     public void create (int [] textures){
         if(level == 1) {

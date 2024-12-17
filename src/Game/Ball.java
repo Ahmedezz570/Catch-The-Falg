@@ -125,7 +125,7 @@ class Ball{
         }
         if (x<= X_oldPosi-upper &&x>= X_oldPosi-lower ){
             increaseX=(color=="blue")? false :true;
-            System.out.println("hello");
+//            System.out.println("hello");
         }
 
         if (x>= X_oldPosi-0.75 &&x<= X_oldPosi+0.75){
@@ -149,7 +149,7 @@ class Ball{
 
         if(x<=X_oldPosi+0.5 && x >= X_oldPosi-0.5 )
             increaseX= (color == "blue")? true:false;
-        System.out.println(upper+" "+ lower);
+//        System.out.println(upper+" "+ lower);
 
     }
     public void Vert_animation(){
